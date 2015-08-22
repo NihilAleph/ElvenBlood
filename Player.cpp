@@ -34,13 +34,6 @@ void Player::init(b2World* world, const glm::vec2& position) {
 	m_drawDimensions = glm::vec2(3.0f, 3.0f);
 }
 
-
-void Player::takeDamage(float damage, b2Vec2 contactNormal) {
-	//m_life -= damage;
-	//contactNormal*= 0.50f;
-	//m_hitbox->getBody()->ApplyLinearImpulse(contactNormal, m_hitbox->getBody()->GetPosition(), true);
-}
-
 void Player::draw(taengine::SpriteBatch& spriteBatch) {
 	glm::vec4 destRect;
 	glm::vec4 uvRect;

@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "Wall.h"
 #include "Background.h"
+#include "Houses.h"
 #include "ContactListener.h"
 
 class GameplayScreen : public taengine::IGameScreen
@@ -43,6 +44,7 @@ private:
 	Player m_player;
 	Wall m_ground;
 	Background m_background;
+	Houses m_houses;
 	ContactListener m_contactListener;
 
 	void checkInput();

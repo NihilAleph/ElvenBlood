@@ -1,25 +1,21 @@
 #pragma once
 #include "Body.h"
 
-enum class PlayerMoveState { STANDING, WALKING, ATTACKING, MIDAIR_UP, MIDAIR_DOWN };
+enum class EnemyMoveState { STANDING, WALKING, DEAD };
 
-class Player : public Body
+class Guardian : public Body
 {
 public:
-	Player();
-	~Player();
+	Guardian();
+	~Guardian();
 
 	virtual void init(b2World* world, const glm::vec2& position) override;
 
 	virtual void draw(taengine::SpriteBatch& spriteBatch) override;
 	virtual void update(taengine::InputManager& inputManager) override;
 	virtual int getCategory() override {
-		return BodyType::PLAYER;
+		return BodyType::ENEMY;
 	}
-	const float FORCE = 20.0f;
-
-	void addFootContacts() { m_footContacts++; }
-	void subFootContacts() { m_footContacts--; }
 
 private:
 
@@ -30,6 +26,6 @@ private:
 
 	int m_footContacts = 0;
 
-	PlayerMoveState m_moveState = PlayerMoveState::STANDING;
+	EnemyMoveState m_moveState = EnemyMoveState::STANDING;
 };
 

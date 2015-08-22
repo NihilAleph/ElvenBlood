@@ -28,7 +28,7 @@ void GameplayScreen::onEntry() {
 	m_world.get()->SetContactListener(&m_contactListener);
 
 	m_spriteBatch.init();
-	m_renderDebug = true;
+	m_renderDebug = false;
 	m_debugRenderer.init();
 
 	m_textureProgram.compileShaders("Shaders/textureShading.vert", "Shaders/textureShading.frag");
@@ -46,6 +46,7 @@ void GameplayScreen::onEntry() {
 	m_player.init(m_world.get(), glm::vec2(-1.0f, 0.0f));
 	m_ground.init(m_world.get(), glm::vec2(28.0f, -9.0f), glm::vec2(84.0f, 2.0f));
 	m_background.init();
+	m_houses.init();
 }
 
 void GameplayScreen::onExit() {
@@ -99,6 +100,7 @@ void GameplayScreen::draw() {
 
 	m_player.draw(m_spriteBatch);
 	m_background.draw(m_spriteBatch);
+	m_houses.draw(m_spriteBatch);
 
 	m_spriteBatch.end();
 	m_spriteBatch.renderBatch();
