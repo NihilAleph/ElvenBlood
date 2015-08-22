@@ -27,7 +27,7 @@ void GameplayScreen::onEntry() {
 	m_world = std::make_unique<b2World>(gravity);
 
 	m_spriteBatch.init();
-	m_renderDebug = false;
+	m_renderDebug = true;
 	m_debugRenderer.init();
 
 	m_textureProgram.compileShaders("Shaders/textureShading.vert", "Shaders/textureShading.frag");
@@ -42,8 +42,9 @@ void GameplayScreen::onEntry() {
 	m_camera.setPosition(glm::vec2(0.0f, 0.0f));
 	m_camera.setScale(32.0f);
 
-	m_player.init(m_world.get(), glm::vec2(0.0f, 0.0f));
-	m_wall.init(m_world.get(), glm::vec2(0.0f, -9.0f), glm::vec2(20.0f, 2.0f));
+	m_player.init(m_world.get(), glm::vec2(-1.0f, 0.0f));
+	m_ground.init(m_world.get(), glm::vec2(28.0f, -9.0f), glm::vec2(84.0f, 2.0f));
+	m_background.init();
 }
 
 void GameplayScreen::onExit() {
@@ -51,6 +52,19 @@ void GameplayScreen::onExit() {
 }
 
 void GameplayScreen::update() {
+
+	// fix camera position
+	glm::vec2 cameraPosition = m_camera.getPosition();
+	glm::vec2 playerPosition = m_player.getPosition();
+	glm::vec2 posDiff = cameraPosition - playerPosition;
+
+	if (posDiff.x < 1.0f) {
+		m_camera.setPosition(glm::vec2(cameraPosition.x - (posDiff.x - 1.0f), cameraPosition.y));
+	}
+	if (posDiff.x > 8.0f) {
+		m_camera.setPosition(glm::vec2(cameraPosition.x - (posDiff.x - 8.0f), cameraPosition.y));
+	}
+
 	m_camera.update();
 	checkInput();
 
@@ -77,6 +91,7 @@ void GameplayScreen::draw() {
 	m_spriteBatch.begin(taengine::GlyphSortType::FRONT_TO_BACK);
 
 	m_player.draw(m_spriteBatch);
+	m_background.draw(m_spriteBatch);
 
 	m_spriteBatch.end();
 	m_spriteBatch.renderBatch();
@@ -84,7 +99,7 @@ void GameplayScreen::draw() {
 
 	if (m_renderDebug) {
 		m_player.drawDebug(m_debugRenderer, taengine::Color(255,255,255,255));
-		m_wall.drawDebug(m_debugRenderer, taengine::Color(255, 255, 255, 255));
+		m_ground.drawDebug(m_debugRenderer, taengine::Color(255, 255, 255, 255));
 		m_debugRenderer.end();
 		m_debugRenderer.render(projectionMatrix, 2.0f);
 	}

@@ -7,6 +7,7 @@
 #include <Box2D\Box2D.h>
 #include "Player.h"
 #include "Wall.h"
+#include "Background.h"
 
 class GameplayScreen : public taengine::IGameScreen
 {
@@ -41,7 +42,8 @@ private:
 	std::unique_ptr<b2World> m_world = nullptr;
 
 	Player m_player;
-	Wall m_wall;
+	Wall m_ground;
+	Background m_background;
 
 	void checkInput();
 
