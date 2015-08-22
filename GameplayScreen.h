@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "Wall.h"
 #include "Background.h"
+#include "ContactListener.h"
 
 class GameplayScreen : public taengine::IGameScreen
 {
@@ -27,8 +28,6 @@ public:
 	virtual int getNextScreenIndex() const override;
 	virtual int getPreviousScreenIndex() const override;
 
-	const float GRAVITY = 9.81f;
-
 private:
 	taengine::Camera2D m_camera;
 	taengine::GLSLProgram m_textureProgram;
@@ -44,6 +43,7 @@ private:
 	Player m_player;
 	Wall m_ground;
 	Background m_background;
+	ContactListener m_contactListener;
 
 	void checkInput();
 

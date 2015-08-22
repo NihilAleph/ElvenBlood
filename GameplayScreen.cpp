@@ -23,8 +23,9 @@ void GameplayScreen::destroy() {
 
 void GameplayScreen::onEntry() {
 
-	b2Vec2 gravity(0.0f, -GRAVITY);
+	b2Vec2 gravity(0.0f, -20.0f);
 	m_world = std::make_unique<b2World>(gravity);
+	m_world.get()->SetContactListener(&m_contactListener);
 
 	m_spriteBatch.init();
 	m_renderDebug = true;
@@ -59,10 +60,16 @@ void GameplayScreen::update() {
 	glm::vec2 posDiff = cameraPosition - playerPosition;
 
 	if (posDiff.x < 1.0f) {
-		m_camera.setPosition(glm::vec2(cameraPosition.x - (posDiff.x - 1.0f), cameraPosition.y));
+		m_camera.move(glm::vec2(1.0f - posDiff.x, 0.0f));
 	}
 	if (posDiff.x > 8.0f) {
-		m_camera.setPosition(glm::vec2(cameraPosition.x - (posDiff.x - 8.0f), cameraPosition.y));
+		m_camera.move(glm::vec2(8.0f - posDiff.x, 0.0f));
+	}
+	if (posDiff.y < 0.0f) {
+		m_camera.move(glm::vec2(0.0f, 0.0f - posDiff.y));
+	}
+	if (posDiff.y > 7.0f) {
+		m_camera.move(glm::vec2(0.0f, 7.0f - posDiff.y));
 	}
 
 	m_camera.update();

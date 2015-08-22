@@ -21,6 +21,15 @@ void Player::init(b2World* world, const glm::vec2& position) {
 	m_hitbox->getBody()->SetLinearDamping(2.0f);
 	m_hitbox->getBody()->SetUserData(this);
 
+	//add foot sensor fixture
+	b2PolygonShape polygonShape;
+	polygonShape.SetAsBox(0.5f, 0.2f, b2Vec2(0, -1.25f), 0);
+	b2FixtureDef fixtureDef;
+	fixtureDef.isSensor = true;
+	fixtureDef.shape = &polygonShape;
+	b2Fixture* footSensorFixture = m_hitbox->getBody()->CreateFixture(&fixtureDef);
+	footSensorFixture->SetUserData((void*)3);
+
 	m_tileSheet.init(taengine::ResourceManager::getTexture("Sprites/anya.png"), glm::ivec2(7, 1));
 	m_drawDimensions = glm::vec2(3.0f, 3.0f);
 }
@@ -112,7 +121,9 @@ void Player::update(taengine::InputManager& inputManager) {
 	}
 
 	if (inputManager.isKeyDown(SDLK_SPACE)) {
-		m_moveState = PlayerMoveState::ATTACKING;
+		if (m_moveState == PlayerMoveState::STANDING) {
+			m_moveState = PlayerMoveState::ATTACKING;
+		}
 	}
 
 	// Apply movement
@@ -123,7 +134,9 @@ void Player::update(taengine::InputManager& inputManager) {
 		body->ApplyForce(b2Vec2(-FORCE, 0.0f), position, true);
 	}
 	if (inputManager.isKeyDown(SDLK_w)) {
-		body->ApplyLinearImpulse(b2Vec2(0.0f, 5.0f), position, true);
+		if (m_footContacts > 0) {
+			body->ApplyLinearImpulse(b2Vec2(0.0f, 20.0f), position, true);
+		}
 	}
 
 
