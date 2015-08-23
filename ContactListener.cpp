@@ -36,6 +36,9 @@ void ContactListener::BeginContact(b2Contact* contact) {
 
 		// sight sensor
 		if (fixtureCategoryA == FixtureTag::ENEMY_SIGHT) {
+			void* bodyUserDataA = contact->GetFixtureA()->GetBody()->GetUserData();
+			static_cast<Guardian*>(bodyUserDataA)->foundAnya();
+
 			void* bodyUserDataB = contact->GetFixtureB()->GetBody()->GetUserData();
 			static_cast<Player*>(bodyUserDataB)->setSighted();
 		}
@@ -58,6 +61,9 @@ void ContactListener::BeginContact(b2Contact* contact) {
 
 		// sight sensor
 		if (fixtureCategoryB == FixtureTag::ENEMY_SIGHT) {
+			void* bodyUserDataB = contact->GetFixtureB()->GetBody()->GetUserData();
+			static_cast<Guardian*>(bodyUserDataB)->foundAnya();
+
 			void* bodyUserDataA = contact->GetFixtureA()->GetBody()->GetUserData();
 			static_cast<Player*>(bodyUserDataA)->setSighted();
 		}

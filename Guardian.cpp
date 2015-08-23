@@ -1,6 +1,8 @@
 #include "Guardian.h"
 #include "Box.h"
 #include <SDL\SDL.h>
+#include <random>
+#include <ctime>
 
 Guardian::Guardian()
 {
@@ -25,6 +27,8 @@ void Guardian::init(b2World* world, const glm::vec2& position, float cooldown, f
 	m_counter = 0.0f;
 	m_range = range;
 	m_direction = direction;
+
+	bool m_foundAnya = false;
 
 	//add sight sensor fixture
 	b2PolygonShape polygonShape;
@@ -157,4 +161,20 @@ void Guardian::drawLight(taengine::SpriteBatch& spriteBatch) {
 
 		spriteBatch.draw(destRect, uvRect, 0.0f, 0, taengine::Color(155, 155, 0, 255));
 	}
+}
+
+void Guardian::foundAnya()  {
+
+	// Make a bunch of boxes
+	std::mt19937 randGenerator(time(nullptr));
+	std::uniform_int_distribution<int> number(0, 5);
+
+
+	m_shoutNumber = number(randGenerator);
+
+	m_foundAnya = true;
+}
+
+std::string Guardian::shout() {
+	return shouts[m_shoutNumber];
 }

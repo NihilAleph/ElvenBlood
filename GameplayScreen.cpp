@@ -24,6 +24,8 @@ void GameplayScreen::destroy() {
 void GameplayScreen::onEntry() {
 
 	m_spriteBatch.init();
+	m_spriteFont = new taengine::SpriteFont("Fonts/OpenSans-Regular.ttf", 64);
+
 	m_renderDebug = false;
 	m_debugRenderer.init();
 
@@ -391,7 +393,6 @@ void GameplayScreen::update() {
 		playerPosition = m_player.getPosition();
 		posDiff = cameraPosition - playerPosition;
 
-		std::cout << playerPosition.x << ", " << playerPosition.y << "\n";
 		if (posDiff.x < 1.0f) {
 			m_camera.move(glm::vec2(1.0f - posDiff.x, 0.0f));
 		}
@@ -449,8 +450,18 @@ void GameplayScreen::draw() {
 	m_spriteBatch.begin(taengine::GlyphSortType::FRONT_TO_BACK);
 
 	m_player.draw(m_spriteBatch);
+
 	for (auto& g : m_guardians) {
 		g->draw(m_spriteBatch);
+		if (g->hasFoundAnya()) {
+
+			char buffer[256];
+
+			sprintf_s(buffer, g->shout().c_str());
+
+			m_spriteFont->draw(m_spriteBatch, buffer, g->getPosition() + glm::vec2(0.0f, 2.5f), glm::vec2(0.01f),
+				2.0f, taengine::Color(128, 128, 255, 255), taengine::Justification::MIDDLE);
+		}
 	}
 	for (auto& c : m_crates) {
 		c->draw(m_spriteBatch);

@@ -2,6 +2,9 @@
 #include "Body.h"
 
 enum class GuardianMoveState { STANDING, WALKING, DEAD };
+static std::string shouts[] = {"I got you now, you little monster!", "Where do you think you're going, little elf?",
+								"There she is! Grab that beast!", "There is one trying to escape! Grab her!",
+								"Look, another monster! Kill her!", "Don't run, you scum, I got you now" };
 
 class Guardian : public Body
 {
@@ -17,7 +20,10 @@ public:
 	void drawDebug(taengine::DebugRenderer& renderer, taengine::Color color);
 
 	void setCounter(float counter) { m_counter = counter; }
+	void foundAnya();
+	bool hasFoundAnya() { return m_foundAnya; }
 
+	std::string shout();
 
 	void die();
 
@@ -28,6 +34,9 @@ private:
 	float m_range = 5.0f;
 
 	int m_direction = 1; // ou -1
+
+	bool m_foundAnya = false;
+	int m_shoutNumber;
 
 	glm::vec2 m_position;
 

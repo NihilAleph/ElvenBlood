@@ -4,6 +4,7 @@
 #include <taengine\GLSLProgram.h>
 #include <taengine\Window.h>
 #include <taengine\DebugRenderer.h>
+#include <taengine\SpriteFont.h>
 #include <Box2D\Box2D.h>
 #include "Player.h"
 #include "Guardian.h"
@@ -48,6 +49,7 @@ private:
 	taengine::DebugRenderer m_debugRenderer;
 
 	taengine::SpriteBatch m_spriteBatch;
+	taengine::SpriteFont* m_spriteFont;
 
 	std::unique_ptr<b2World> m_world = nullptr;
 
@@ -56,8 +58,7 @@ private:
 	std::vector<Crate*> m_crates;
 	std::vector<Brick*> m_bricks;
 	std::vector<Wall*> m_walls;
-	Wall m_ground;
-	Wall m_startWall;
+
 	Background m_background;
 	Houses m_houses;
 	ContactListener m_contactListener;
