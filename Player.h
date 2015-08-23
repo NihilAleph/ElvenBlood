@@ -1,7 +1,7 @@
 #pragma once
 #include "Body.h"
 
-enum class PlayerMoveState { STANDING, WALKING, ATTACKING, MIDAIR_UP, MIDAIR_DOWN };
+enum class PlayerMoveState { STANDING, WALKING, ATTACKING, MIDAIR_UP, MIDAIR_DOWN, SIGHTED };
 
 class Player : public Body
 {
@@ -13,15 +13,15 @@ public:
 
 	virtual void draw(taengine::SpriteBatch& spriteBatch) override;
 	virtual void update(taengine::InputManager& inputManager) override;
-	virtual int getCategory() override {
-		return BodyType::PLAYER;
-	}
 	const float FORCE = 20.0f;
 
 	void drawDebug(taengine::DebugRenderer& renderer, taengine::Color color);
 
 	void addFootContacts() { m_footContacts++; }
 	void subFootContacts() { m_footContacts--; }
+
+	void setSighted() { m_moveState = PlayerMoveState::SIGHTED; }
+	bool isSighted() { return m_moveState == PlayerMoveState::SIGHTED; }
 
 private:
 

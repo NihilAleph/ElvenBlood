@@ -13,16 +13,13 @@ public:
 
 	virtual void draw(taengine::SpriteBatch& spriteBatch) override;
 	virtual void update(taengine::InputManager& inputManager) override;
-	virtual int getCategory() override {
-		return BodyType::ENEMY;
-	}
 	void drawDebug(taengine::DebugRenderer& renderer, taengine::Color color);
 
 	void die();
 
 private:
 
-	float m_cooldown = 3.0f;
+	float m_cooldown = 5.0f;
 	float m_counter = 0.0f;
 
 	int m_direction = 1; // ou -1
@@ -30,6 +27,8 @@ private:
 	glm::vec2 m_position;
 
 	GuardianMoveState m_moveState = GuardianMoveState::STANDING;
+
+	b2Fixture* m_sightSensor;
 
 };
 

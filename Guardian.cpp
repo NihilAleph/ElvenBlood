@@ -16,19 +16,20 @@ void Guardian::init(b2World* world, const glm::vec2& position) {
 	m_hitbox = new Box;
 	glm::vec2 dimensions(1.5f, 4.0f);
 	static_cast<Box*> (m_hitbox)->init(world, b2_dynamicBody, position, true, false,
-		dimensions, 1.0f, 1.0f, 0.0f, false, BodyType::ENEMY, BodyType::ALL);
+		dimensions, 1.0f, 1.0f, 0.0f, false, FixtureTag::ENEMY_BODY, FixtureTag::ALL);
 
 	m_hitbox->getBody()->SetLinearDamping(2.0f);
 	m_hitbox->getBody()->SetUserData(this);
 
-	//add foot sensor fixture
-	//b2PolygonShape polygonShape;
-	//polygonShape.SetAsBox(0.5f, 0.2f, b2Vec2(0, -1.25f), 0);
-	//b2FixtureDef fixtureDef;
-	//fixtureDef.isSensor = true;
-	//fixtureDef.shape = &polygonShape;
-	//b2Fixture* footSensorFixture = m_hitbox->getBody()->CreateFixture(&fixtureDef);
-	//footSensorFixture->SetUserData((void*)3);
+	//add sight sensor fixture
+	b2PolygonShape polygonShape;
+	polygonShape.SetAsBox(5.0f, 2.0f, b2Vec2(-5.0f - 0.75f, 0.0f), 0);
+	b2FixtureDef fixtureDef;
+	fixtureDef.isSensor = true;
+	fixtureDef.shape = &polygonShape;
+	fixtureDef.filter.categoryBits = FixtureTag::ENEMY_SIGHT;
+	fixtureDef.filter.maskBits = FixtureTag::PLAYER_BODY;
+	m_sightSensor = m_hitbox->getBody()->CreateFixture(&fixtureDef);
 
 	m_tileSheet.init(taengine::ResourceManager::getTexture("Sprites/guardian.png"), glm::ivec2(2, 1));
 	m_drawDimensions = glm::vec2(4.5f, 4.5f);
@@ -90,6 +91,18 @@ void Guardian::update(taengine::InputManager& inputManager) {
 		if (m_counter > m_cooldown) {
 			m_counter = 0.0f;
 			m_direction *= -1;
+
+			m_hitbox->getBody()->DestroyFixture(m_sightSensor);
+
+			//add sight sensor fixture
+			b2PolygonShape polygonShape;
+			polygonShape.SetAsBox(5.0f, 2.0f, b2Vec2((-5.0f-0.75f) * m_direction, 0.0f), 0);
+			b2FixtureDef fixtureDef;
+			fixtureDef.isSensor = true;
+			fixtureDef.shape = &polygonShape;
+			fixtureDef.filter.categoryBits = FixtureTag::ENEMY_SIGHT;
+			fixtureDef.filter.maskBits = FixtureTag::PLAYER_BODY;
+			m_sightSensor = m_hitbox->getBody()->CreateFixture(&fixtureDef);
 		}
 	}
 
@@ -108,5 +121,19 @@ void Guardian::die() {
 void Guardian::drawDebug(taengine::DebugRenderer& renderer, taengine::Color color) {
 	if (m_hitbox) {
 		m_hitbox->draw(renderer, color);
+
+		glm::vec4 destRect;
+		if (m_direction > 0) {
+			destRect.x = m_hitbox->getBody()->GetPosition().x - (0.75f + 10.0f);
+		}
+		else {
+			destRect.x = m_hitbox->getBody()->GetPosition().x + (0.75f);
+
+		}
+		destRect.y = m_hitbox->getBody()->GetPosition().y - 2.0f;
+		destRect.z = 10.0f;
+		destRect.w = 4.0f;
+
+		renderer.drawBox(destRect, color, 0.0f);
 	}
 }

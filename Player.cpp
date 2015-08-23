@@ -16,7 +16,7 @@ void Player::init(b2World* world, const glm::vec2& position) {
 	m_hitbox = new Box;
 	glm::vec2 dimensions(1.0f, 2.5f);
 	static_cast<Box*> (m_hitbox)->init(world, b2_dynamicBody, position, true, false,
-		dimensions, 1.0f, 1.0f, 0.0f, false, BodyType::PLAYER, BodyType::ALL);
+		dimensions, 1.0f, 1.0f, 0.0f, false, FixtureTag::PLAYER_BODY, FixtureTag::ALL);
 
 	m_hitbox->getBody()->SetLinearDamping(2.0f);
 	m_hitbox->getBody()->SetUserData(this);
@@ -27,6 +27,8 @@ void Player::init(b2World* world, const glm::vec2& position) {
 	b2FixtureDef fixtureDef;
 	fixtureDef.isSensor = true;
 	fixtureDef.shape = &polygonShape;
+	fixtureDef.filter.categoryBits = FixtureTag::PLAYER_FOOT;
+	fixtureDef.filter.maskBits = FixtureTag::WALL | FixtureTag::ENEMY_BODY;
 	b2Fixture* footSensorFixture = m_hitbox->getBody()->CreateFixture(&fixtureDef);
 	footSensorFixture->SetUserData((void*)3);
 
@@ -129,6 +131,8 @@ void Player::update(taengine::InputManager& inputManager) {
 			b2FixtureDef fixtureDef;
 			fixtureDef.isSensor = true;
 			fixtureDef.shape = &polygonShape;
+			fixtureDef.filter.categoryBits = FixtureTag::PLAYER_KNIFE;
+			fixtureDef.filter.maskBits = FixtureTag::ENEMY_BODY;
 			m_attackSensor = m_hitbox->getBody()->CreateFixture(&fixtureDef);
 			m_attackSensor->SetUserData((void*)4);
 		}

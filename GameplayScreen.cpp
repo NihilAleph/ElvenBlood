@@ -43,8 +43,8 @@ void GameplayScreen::onEntry() {
 	m_camera.setPosition(glm::vec2(0.0f, 0.0f));
 	m_camera.setScale(32.0f);
 
-	m_player.init(m_world.get(), glm::vec2(-1.0f, 0.0f));
-	m_guardian.init(m_world.get(), glm::vec2(0.0f, 0.0f));
+	m_player.init(m_world.get(), glm::vec2(12.0f, 0.0f));
+	m_guardian.init(m_world.get(), glm::vec2(-1.0f, 0.0f));
 	m_ground.init(m_world.get(), glm::vec2(28.0f, -9.0f), glm::vec2(84.0f, 2.0f));
 	m_background.init();
 	m_houses.init();
@@ -77,8 +77,10 @@ void GameplayScreen::update() {
 	m_camera.update();
 	checkInput();
 
-	m_player.update(m_game->getInputManager());
-	m_guardian.update(m_game->getInputManager());
+	if (!m_player.isSighted()) {
+		m_player.update(m_game->getInputManager());
+		m_guardian.update(m_game->getInputManager());
+	}
 
 	m_world->Step(1.0f / 60.0f, 6, 2);
 }

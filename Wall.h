@@ -6,9 +6,8 @@ public:
 	Wall();
 	~Wall();
 
-	void init(b2World* world, const glm::vec2& position, const glm::vec2& dimensions, uint16 maskBits = BodyType::ALL);
+	void init(b2World* world, const glm::vec2& position, const glm::vec2& dimensions, uint16 maskBits = FixtureTag::ALL);
 
-	virtual int getCategory() override { return BodyType::WALL; }
 
 private:
 };

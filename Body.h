@@ -5,11 +5,14 @@
 #include <taengine\SpriteBatch.h>
 #include <taengine\InputManager.h>
 #include <taengine\ResourceManager.h>
-enum BodyType {
-	PLAYER = 0x0001,
-	ENEMY = 0x0002,
-	WALL = 0x0004,
-	BOUNDARY = 0x0010,
+enum FixtureTag {
+	PLAYER_BODY = 0x0001,
+	PLAYER_KNIFE = 0x0002,
+	PLAYER_FOOT = 0x0004,
+	ENEMY_BODY = 0x0008,
+	ENEMY_SIGHT = 0x0010,
+	WALL = 0x0020,
+	BOUNDARY = 0x0040,
 	ALL = 0XFFFF
 };
 
@@ -29,7 +32,6 @@ public:
 
 	virtual void draw(taengine::SpriteBatch& spriteBatch) {};
 	virtual void update(taengine::InputManager& inputManager) {};
-	virtual int getCategory() = 0;
 
 protected:
 	Shape* m_hitbox;

@@ -16,63 +16,68 @@ ContactListener::~ContactListener()
 
 void ContactListener::BeginContact(b2Contact* contact) {
 	//check if fixture A was the foot sensor
-	void* fixtureUserData = contact->GetFixtureA()->GetUserData();
+	uint16 fixtureCategoryA = contact->GetFixtureA()->GetFilterData().categoryBits;
+	uint16 fixtureCategoryB = contact->GetFixtureB()->GetFilterData().categoryBits;
 	if (contact->GetFixtureA()->IsSensor()) {
 		// foot sensor
-		if ((int)fixtureUserData == 3) {
+		if (fixtureCategoryA == FixtureTag::PLAYER_FOOT) {
 			void* bodyUserDataA = contact->GetFixtureA()->GetBody()->GetUserData();
-			if (static_cast<Body*>(bodyUserDataA)->getCategory() == BodyType::PLAYER) {
-				static_cast<Player*>(bodyUserDataA)->addFootContacts();
-			}
+			static_cast<Player*>(bodyUserDataA)->addFootContacts();
+			
 		}
 
 		// attack sensor
-		if ((int)fixtureUserData == 4) {
-			void* bodyUserDataB = contact->GetFixtureA()->GetBody()->GetUserData();
-			if (static_cast<Body*>(bodyUserDataB)->getCategory() == BodyType::ENEMY) {
-				static_cast<Guardian*>(bodyUserDataB)->die();
-			}
+		if (fixtureCategoryA == FixtureTag::PLAYER_KNIFE) {
+			void* bodyUserDataB = contact->GetFixtureB()->GetBody()->GetUserData();
+			static_cast<Guardian*>(bodyUserDataB)->die();
+		}
+
+		// sight sensor
+		if (fixtureCategoryA == FixtureTag::ENEMY_SIGHT) {
+			void* bodyUserDataB = contact->GetFixtureB()->GetBody()->GetUserData();
+			static_cast<Player*>(bodyUserDataB)->setSighted();
 		}
 	}
 	//check if fixture B was the foot sensor
-	fixtureUserData = contact->GetFixtureB()->GetUserData();
 	if (contact->GetFixtureB()->IsSensor()) {
-		if ((int)fixtureUserData == 3) {
+		if (fixtureCategoryB == FixtureTag::PLAYER_FOOT) {
 			void* bodyUserDataB = contact->GetFixtureB()->GetBody()->GetUserData();
-			if (static_cast<Body*>(bodyUserDataB)->getCategory() == BodyType::PLAYER) {
-				static_cast<Player*>(bodyUserDataB)->addFootContacts();
-			}
+			static_cast<Player*>(bodyUserDataB)->addFootContacts();
 		}
 
 		// attack sensor
-		if ((int)fixtureUserData == 4) {
+		if (fixtureCategoryB == FixtureTag::PLAYER_KNIFE) {
 			void* bodyUserDataA = contact->GetFixtureA()->GetBody()->GetUserData();
-			if (static_cast<Body*>(bodyUserDataA)->getCategory() == BodyType::ENEMY) {
-				static_cast<Guardian*>(bodyUserDataA)->die();
-			}
+			static_cast<Guardian*>(bodyUserDataA)->die();
+			
+		}
+
+		// sight sensor
+		if (fixtureCategoryB == FixtureTag::ENEMY_SIGHT) {
+			void* bodyUserDataA = contact->GetFixtureA()->GetBody()->GetUserData();
+			static_cast<Player*>(bodyUserDataA)->setSighted();
 		}
 	}
 }
 
 void ContactListener::EndContact(b2Contact* contact) {
 	//check if fixture A was the foot sensor
-	void* fixtureUserData = contact->GetFixtureA()->GetUserData();
+	uint16 fixtureCategoryA = contact->GetFixtureA()->GetFilterData().categoryBits;
+	uint16 fixtureCategoryB = contact->GetFixtureB()->GetFilterData().categoryBits;
+
 	if (contact->GetFixtureA()->IsSensor()) {
-		if ((int)fixtureUserData == 3) {
+		if (fixtureCategoryA == FixtureTag::PLAYER_FOOT) {
 			void* bodyUserDataA = contact->GetFixtureA()->GetBody()->GetUserData();
-			if (static_cast<Body*>(bodyUserDataA)->getCategory() == BodyType::PLAYER) {
-				static_cast<Player*>(bodyUserDataA)->subFootContacts();
-			}
+			static_cast<Player*>(bodyUserDataA)->subFootContacts();
+			
 		}
 	}
 	//check if fixture B was the foot sensor
-	fixtureUserData = contact->GetFixtureB()->GetUserData();
 	if (contact->GetFixtureB()->IsSensor()) {
-		if ((int)fixtureUserData == 3) {
+		if (fixtureCategoryB == FixtureTag::PLAYER_FOOT) {
 			void* bodyUserDataB = contact->GetFixtureB()->GetBody()->GetUserData();
-			if (static_cast<Body*>(bodyUserDataB)->getCategory() == BodyType::PLAYER) {
-				static_cast<Player*>(bodyUserDataB)->subFootContacts();
-			}
+			static_cast<Player*>(bodyUserDataB)->subFootContacts();
+			
 		}
 	}
 }
