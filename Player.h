@@ -13,7 +13,6 @@ public:
 
 	virtual void draw(taengine::SpriteBatch& spriteBatch) override;
 	virtual void update(taengine::InputManager& inputManager) override;
-	const float FORCE = 20.0f;
 
 	void drawDebug(taengine::DebugRenderer& renderer, taengine::Color color);
 

@@ -102,6 +102,9 @@ void Player::draw(taengine::SpriteBatch& spriteBatch) {
 }
 
 void Player::update(taengine::InputManager& inputManager) {
+
+	const float FORCE = 25.0f;
+
 	b2Body* body = m_hitbox->getBody();
 	b2Vec2 position = body->GetPosition();
 

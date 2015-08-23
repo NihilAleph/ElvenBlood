@@ -140,9 +140,9 @@ void Guardian::drawLight(taengine::SpriteBatch& spriteBatch) {
 	// extreme go horse
 	if (m_hitbox) {
 		glm::vec4 destRect;
-		destRect.x = m_position.x - m_range * 4 / 2.0f;
+		destRect.x = m_position.x - m_range * 4 / 2.0f - 0.75f;
 		destRect.y = m_position.y - m_range * 4 / 2.0f;
-		destRect.z = m_range * 4 - 0.75 * m_direction;
+		destRect.z = m_range * 4 + 1.5f;
 		destRect.w = m_range * 4;
 			
 		glm::vec4 uvRect(-1.0f, -1.0f, 2.0f, 2.0f);

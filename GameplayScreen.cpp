@@ -28,7 +28,7 @@ void GameplayScreen::onEntry() {
 	m_world.get()->SetContactListener(&m_contactListener);
 
 	m_spriteBatch.init();
-	m_renderDebug = true;
+	m_renderDebug = false;
 	m_debugRenderer.init();
 
 	m_textureProgram.compileShaders("Shaders/textureShading.vert", "Shaders/textureShading.frag");
@@ -62,11 +62,53 @@ void GameplayScreen::onEntry() {
 	m_guardians.back()->setDirection();
 	m_guardians.back()->init(m_world.get(), glm::vec2(16.0f, -6.0f));
 
+	m_guardians.push_back(new Guardian);
+	m_guardians.back()->setCooldown(8.0f);
+	m_guardians.back()->setDirection();
+	m_guardians.back()->init(m_world.get(), glm::vec2(34.0f, -6.0f));
+
+	m_guardians.push_back(new Guardian);
+	m_guardians.back()->setCooldown(6.0f);
+	m_guardians.back()->init(m_world.get(), glm::vec2(44.5f, 0.0f));
+
 	// init crates
 	m_crates.push_back(new Crate);
 	m_crates.back()->init(m_world.get(), glm::vec2(13.0f, -7.0f));
+	m_crates.push_back(new Crate);
+	m_crates.back()->init(m_world.get(), glm::vec2(48.0f, -7.0f));
 
 	// init bricks
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(53.0f, -2.0f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(52.0f, -2.0f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(51.0f, -2.0f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(50.0f, -2.0f));
+
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(46.0f, -2.0f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(45.0f, -2.0f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(44.0f, -2.0f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(43.0f, -2.0f));
+
+
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(34.0f, -2.0f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(33.0f, -2.0f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(32.0f, -2.0f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(31.0f, -2.0f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(30.0f, -2.0f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(29.0f, -2.0f));
 
 	m_bricks.push_back(new Brick);
 	m_bricks.back()->init(m_world.get(), glm::vec2(23.0f, -2.0f));
@@ -106,8 +148,8 @@ void GameplayScreen::update() {
 	if (posDiff.y < 0.0f) {
 		m_camera.move(glm::vec2(0.0f, 0.0f - posDiff.y));
 	}
-	if (posDiff.y > 5.0f) {
-		m_camera.move(glm::vec2(0.0f, 5.0f - posDiff.y));
+	if (posDiff.y > 4.0f) {
+		m_camera.move(glm::vec2(0.0f, 4.0f - posDiff.y));
 	}
 
 	m_camera.update();
