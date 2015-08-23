@@ -78,7 +78,9 @@
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Body.cpp" />
     <ClCompile Include="Box.cpp" />
+    <ClCompile Include="Brick.cpp" />
     <ClCompile Include="ContactListener.cpp" />
+    <ClCompile Include="Crate.cpp" />
     <ClCompile Include="GameplayScreen.cpp" />
     <ClCompile Include="Guardian.cpp" />
     <ClCompile Include="Houses.cpp" />
@@ -92,7 +94,9 @@
     <ClInclude Include="Background.h" />
     <ClInclude Include="Body.h" />
     <ClInclude Include="Box.h" />
+    <ClInclude Include="Brick.h" />
     <ClInclude Include="ContactListener.h" />
+    <ClInclude Include="Crate.h" />
     <ClInclude Include="GameplayScreen.h" />
     <ClInclude Include="Guardian.h" />
     <ClInclude Include="Houses.h" />

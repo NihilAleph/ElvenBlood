@@ -8,6 +8,8 @@
 #include "Player.h"
 #include "Guardian.h"
 #include "Wall.h"
+#include "Crate.h"
+#include "Brick.h"
 #include "Background.h"
 #include "Houses.h"
 #include "ContactListener.h"
@@ -43,8 +45,11 @@ private:
 	std::unique_ptr<b2World> m_world = nullptr;
 
 	Player m_player;
-	Guardian m_guardian;
+	std::vector<Guardian> m_guardians;
 	Wall m_ground;
+	Crate m_crate;
+	Brick m_brick;
+	Brick m_brick2;
 	Background m_background;
 	Houses m_houses;
 	ContactListener m_contactListener;

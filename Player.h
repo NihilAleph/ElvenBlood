@@ -20,6 +20,8 @@ public:
 	void addFootContacts() { m_footContacts++; }
 	void subFootContacts() { m_footContacts--; }
 
+	void addKill() { m_killCount++; }
+
 	void setSighted() { m_moveState = PlayerMoveState::SIGHTED; }
 	bool isSighted() { return m_moveState == PlayerMoveState::SIGHTED; }
 
@@ -31,6 +33,8 @@ private:
 	int m_direction = 1; // or -1
 
 	int m_footContacts = 0;
+
+	int m_killCount = 0;
 
 	PlayerMoveState m_moveState = PlayerMoveState::STANDING;
 

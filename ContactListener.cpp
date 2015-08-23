@@ -30,6 +30,8 @@ void ContactListener::BeginContact(b2Contact* contact) {
 		if (fixtureCategoryA == FixtureTag::PLAYER_KNIFE) {
 			void* bodyUserDataB = contact->GetFixtureB()->GetBody()->GetUserData();
 			static_cast<Guardian*>(bodyUserDataB)->die();
+			void* bodyUserDataA = contact->GetFixtureA()->GetBody()->GetUserData();
+			static_cast<Player*>(bodyUserDataA)->addKill();
 		}
 
 		// sight sensor
@@ -49,6 +51,8 @@ void ContactListener::BeginContact(b2Contact* contact) {
 		if (fixtureCategoryB == FixtureTag::PLAYER_KNIFE) {
 			void* bodyUserDataA = contact->GetFixtureA()->GetBody()->GetUserData();
 			static_cast<Guardian*>(bodyUserDataA)->die();
+			void* bodyUserDataB = contact->GetFixtureB()->GetBody()->GetUserData();
+			static_cast<Player*>(bodyUserDataB)->addKill();
 			
 		}
 

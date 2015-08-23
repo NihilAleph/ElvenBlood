@@ -32,7 +32,7 @@ void Player::init(b2World* world, const glm::vec2& position) {
 	b2Fixture* footSensorFixture = m_hitbox->getBody()->CreateFixture(&fixtureDef);
 	footSensorFixture->SetUserData((void*)3);
 
-	m_tileSheet.init(taengine::ResourceManager::getTexture("Sprites/anya.png"), glm::ivec2(7, 1));
+	m_tileSheet.init(taengine::ResourceManager::getTexture("Sprites/anya.png"), glm::ivec2(7, 4));
 	m_drawDimensions = glm::vec2(3.0f, 3.0f);
 }
 
@@ -54,6 +54,16 @@ void Player::draw(taengine::SpriteBatch& spriteBatch) {
 	m_animationTime += m_animationSpeed;
 
 	tileIndex += (int)m_animationTime % numTiles;*/
+	int tileRow = 0;
+	if (m_killCount < 2) {
+		tileRow = 3;
+	}
+	else if (m_killCount < 4) {
+		tileRow = 2;
+	}
+	else if (m_killCount < 6) {
+		tileRow = 1;
+	}
 	int tileIndex = 0;
 	int numTiles = 0;
 
@@ -78,6 +88,7 @@ void Player::draw(taengine::SpriteBatch& spriteBatch) {
 		m_animationTime = 0;
 
 	}
+	tileIndex += tileRow * 7;
 
 	uvRect = m_tileSheet.getUVs(tileIndex);
 

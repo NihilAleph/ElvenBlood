@@ -15,12 +15,17 @@ public:
 	virtual void update(taengine::InputManager& inputManager) override;
 	void drawDebug(taengine::DebugRenderer& renderer, taengine::Color color);
 
+	void setCooldown(float cooldown) { m_cooldown = cooldown; }
+	void setRange(float range) { m_range = range; }
+	void setDirection(int direction = -1) { m_direction = direction; }
+
 	void die();
 
 private:
 
 	float m_cooldown = 5.0f;
 	float m_counter = 0.0f;
+	float m_range = 5.0f;
 
 	int m_direction = 1; // ou -1
 

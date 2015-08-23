@@ -1,6 +1,7 @@
 #include "Guardian.h"
 #include "Box.h"
 #include <SDL\SDL.h>
+#include <iostream>
 
 Guardian::Guardian()
 {
@@ -23,7 +24,7 @@ void Guardian::init(b2World* world, const glm::vec2& position) {
 
 	//add sight sensor fixture
 	b2PolygonShape polygonShape;
-	polygonShape.SetAsBox(5.0f, 2.0f, b2Vec2(-5.0f - 0.75f, 0.0f), 0);
+	polygonShape.SetAsBox(m_range, 2.0f, b2Vec2((-m_range - 0.75f) * m_direction, 0.0f), 0);
 	b2FixtureDef fixtureDef;
 	fixtureDef.isSensor = true;
 	fixtureDef.shape = &polygonShape;
@@ -81,28 +82,30 @@ void Guardian::draw(taengine::SpriteBatch& spriteBatch) {
 
 void Guardian::update(taengine::InputManager& inputManager) {
 
-	if (m_moveState == GuardianMoveState::DEAD && m_hitbox) {
-		m_hitbox->getBody()->GetWorld()->DestroyBody(m_hitbox->getBody());
-		m_hitbox = nullptr;
-	}
+	if (m_hitbox) {
+		if (m_moveState == GuardianMoveState::DEAD) {
+			m_hitbox->getBody()->GetWorld()->DestroyBody(m_hitbox->getBody());
+			m_hitbox = nullptr;
+		}
 
-	if (m_moveState == GuardianMoveState::STANDING) {
-		m_counter += 1.0f / 60.0f;
-		if (m_counter > m_cooldown) {
-			m_counter = 0.0f;
-			m_direction *= -1;
+		if (m_moveState == GuardianMoveState::STANDING && m_cooldown > 0) {
+			m_counter += 1.0f / 60.0f;
+			if (m_counter > m_cooldown) {
+				m_counter = 0.0f;
+				m_direction *= -1;
 
-			m_hitbox->getBody()->DestroyFixture(m_sightSensor);
+				m_hitbox->getBody()->DestroyFixture(m_sightSensor);
 
-			//add sight sensor fixture
-			b2PolygonShape polygonShape;
-			polygonShape.SetAsBox(5.0f, 2.0f, b2Vec2((-5.0f-0.75f) * m_direction, 0.0f), 0);
-			b2FixtureDef fixtureDef;
-			fixtureDef.isSensor = true;
-			fixtureDef.shape = &polygonShape;
-			fixtureDef.filter.categoryBits = FixtureTag::ENEMY_SIGHT;
-			fixtureDef.filter.maskBits = FixtureTag::PLAYER_BODY;
-			m_sightSensor = m_hitbox->getBody()->CreateFixture(&fixtureDef);
+				//add sight sensor fixture
+				b2PolygonShape polygonShape;
+				polygonShape.SetAsBox(m_range, 2.0f, b2Vec2((-m_range - 0.75f) * m_direction, 0.0f), 0);
+				b2FixtureDef fixtureDef;
+				fixtureDef.isSensor = true;
+				fixtureDef.shape = &polygonShape;
+				fixtureDef.filter.categoryBits = FixtureTag::ENEMY_SIGHT;
+				fixtureDef.filter.maskBits = FixtureTag::PLAYER_BODY;
+				m_sightSensor = m_hitbox->getBody()->CreateFixture(&fixtureDef);
+			}
 		}
 	}
 
@@ -113,8 +116,9 @@ void Guardian::update(taengine::InputManager& inputManager) {
 }
 
 void Guardian::die() {
-
+	std::cout << (int)m_moveState;
 	m_moveState = GuardianMoveState::DEAD;
+	std::cout << (int)m_moveState;
 }
 
 
@@ -124,7 +128,7 @@ void Guardian::drawDebug(taengine::DebugRenderer& renderer, taengine::Color colo
 
 		glm::vec4 destRect;
 		if (m_direction > 0) {
-			destRect.x = m_hitbox->getBody()->GetPosition().x - (0.75f + 10.0f);
+			destRect.x = m_hitbox->getBody()->GetPosition().x - (0.75f + 2 * m_range);
 		}
 		else {
 			destRect.x = m_hitbox->getBody()->GetPosition().x + (0.75f);

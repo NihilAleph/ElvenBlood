@@ -51,6 +51,12 @@
     <ClCompile Include="Guardian.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Crate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Brick.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -84,6 +90,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Guardian.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Crate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Brick.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

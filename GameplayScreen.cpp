@@ -43,9 +43,20 @@ void GameplayScreen::onEntry() {
 	m_camera.setPosition(glm::vec2(0.0f, 0.0f));
 	m_camera.setScale(32.0f);
 
-	m_player.init(m_world.get(), glm::vec2(12.0f, 0.0f));
-	m_guardian.init(m_world.get(), glm::vec2(-1.0f, 0.0f));
+	m_player.init(m_world.get(), glm::vec2(-1.0f, 0.0f));
+
+	// init guardians
+	Guardian guardian;
+	guardian.setCooldown(0.0f);
+	guardian.setDirection();
+	guardian.init(m_world.get(), glm::vec2(12.0f, 0.0f));
+
+	m_guardians.push_back(guardian);
+
 	m_ground.init(m_world.get(), glm::vec2(28.0f, -9.0f), glm::vec2(84.0f, 2.0f));
+	m_crate.init(m_world.get(), glm::vec2(15.0f, -7.0f));
+	m_brick.init(m_world.get(), glm::vec2(18.0f, -5.0f));
+	m_brick2.init(m_world.get(), glm::vec2(19.0f, -5.0f));
 	m_background.init();
 	m_houses.init();
 }
@@ -70,8 +81,8 @@ void GameplayScreen::update() {
 	if (posDiff.y < 0.0f) {
 		m_camera.move(glm::vec2(0.0f, 0.0f - posDiff.y));
 	}
-	if (posDiff.y > 7.0f) {
-		m_camera.move(glm::vec2(0.0f, 7.0f - posDiff.y));
+	if (posDiff.y > 5.0f) {
+		m_camera.move(glm::vec2(0.0f, 5.0f - posDiff.y));
 	}
 
 	m_camera.update();
@@ -79,7 +90,10 @@ void GameplayScreen::update() {
 
 	if (!m_player.isSighted()) {
 		m_player.update(m_game->getInputManager());
-		m_guardian.update(m_game->getInputManager());
+
+		for (auto& g : m_guardians) {
+			g.update(m_game->getInputManager());
+		}
 	}
 
 	m_world->Step(1.0f / 60.0f, 6, 2);
@@ -103,7 +117,12 @@ void GameplayScreen::draw() {
 	m_spriteBatch.begin(taengine::GlyphSortType::FRONT_TO_BACK);
 
 	m_player.draw(m_spriteBatch);
-	m_guardian.draw(m_spriteBatch);
+	for (auto& g : m_guardians) {
+		g.draw(m_spriteBatch);
+	}
+	m_crate.draw(m_spriteBatch);
+	m_brick2.draw(m_spriteBatch);
+	m_brick.draw(m_spriteBatch);
 	m_background.draw(m_spriteBatch);
 	m_houses.draw(m_spriteBatch);
 
@@ -113,8 +132,15 @@ void GameplayScreen::draw() {
 
 	if (m_renderDebug) {
 		m_player.drawDebug(m_debugRenderer, taengine::Color(255, 255, 255, 255));
-		m_guardian.drawDebug(m_debugRenderer, taengine::Color(255, 255, 255, 255));
+
+		for (auto& g : m_guardians) {
+			g.drawDebug(m_debugRenderer, taengine::Color(255, 255, 255, 255));
+		}
+
 		m_ground.drawDebug(m_debugRenderer, taengine::Color(255, 255, 255, 255));
+		m_crate.drawDebug(m_debugRenderer, taengine::Color(255, 255, 255, 255));
+		m_brick.drawDebug(m_debugRenderer, taengine::Color(255, 255, 255, 255));
+		m_brick2.drawDebug(m_debugRenderer, taengine::Color(255, 255, 255, 255));
 		m_debugRenderer.end();
 		m_debugRenderer.render(projectionMatrix, 2.0f);
 	}
