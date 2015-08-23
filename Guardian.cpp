@@ -12,14 +12,19 @@ Guardian::~Guardian()
 }
 
 
-void Guardian::init(b2World* world, const glm::vec2& position) {
+void Guardian::init(b2World* world, const glm::vec2& position, float cooldown, float range, int direction) {
 	m_hitbox = new Box;
 	glm::vec2 dimensions(1.5f, 4.0f);
-	static_cast<Box*> (m_hitbox)->init(world, b2_dynamicBody, position, true, false,
+	static_cast<Box*> (m_hitbox)->init(world, b2_staticBody, position, true, false,
 		dimensions, 1.0f, 1.0f, 0.0f, false, FixtureTag::ENEMY_BODY, FixtureTag::ALL);
 
 	m_hitbox->getBody()->SetLinearDamping(2.0f);
 	m_hitbox->getBody()->SetUserData(this);
+
+	m_cooldown = cooldown;
+	m_counter = 0.0f;
+	m_range = range;
+	m_direction = direction;
 
 	//add sight sensor fixture
 	b2PolygonShape polygonShape;
@@ -33,6 +38,8 @@ void Guardian::init(b2World* world, const glm::vec2& position) {
 
 	m_tileSheet.init(taengine::ResourceManager::getTexture("Sprites/guardian.png"), glm::ivec2(2, 1));
 	m_drawDimensions = glm::vec2(4.5f, 4.5f);
+
+	m_moveState = GuardianMoveState::STANDING;
 }
 
 void Guardian::draw(taengine::SpriteBatch& spriteBatch) {

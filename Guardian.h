@@ -9,16 +9,13 @@ public:
 	Guardian();
 	~Guardian();
 
-	virtual void init(b2World* world, const glm::vec2& position) override;
+	void init(b2World* world, const glm::vec2& position, float cooldown, float range, int direction);
 
 	virtual void draw(taengine::SpriteBatch& spriteBatch) override;
 	void drawLight(taengine::SpriteBatch& spriteBatch);
 	virtual void update(taengine::InputManager& inputManager) override;
 	void drawDebug(taengine::DebugRenderer& renderer, taengine::Color color);
 
-	void setCooldown(float cooldown) { m_cooldown = cooldown; }
-	void setRange(float range) { m_range = range; }
-	void setDirection(int direction = -1) { m_direction = direction; }
 
 	void die();
 
@@ -32,7 +29,7 @@ private:
 
 	glm::vec2 m_position;
 
-	GuardianMoveState m_moveState = GuardianMoveState::STANDING;
+	GuardianMoveState m_moveState;
 
 	b2Fixture* m_sightSensor;
 

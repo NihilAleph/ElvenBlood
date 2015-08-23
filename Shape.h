@@ -14,7 +14,7 @@ public:
 	b2Body* getBody() { return m_body; }
 
 protected:
-	b2Body* m_body;
+	b2Body* m_body = nullptr;
 
 	void setBody(b2World* world, const b2BodyType& bodyType, const glm::vec2& position,
 		const bool fixedRotation, const bool isBullet);

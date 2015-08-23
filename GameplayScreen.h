@@ -14,6 +14,10 @@
 #include "Houses.h"
 #include "ContactListener.h"
 
+enum class GameState {
+	LOAD, BEGIN, PLAY, SIGHTED, END
+};
+
 class GameplayScreen : public taengine::IGameScreen
 {
 public:
@@ -32,6 +36,8 @@ public:
 	virtual int getNextScreenIndex() const override;
 	virtual int getPreviousScreenIndex() const override;
 
+	void loadLevel();
+
 private:
 	taengine::Camera2D m_camera;
 	taengine::GLSLProgram m_textureProgram;
@@ -49,11 +55,14 @@ private:
 	std::vector<Guardian*> m_guardians;
 	std::vector<Crate*> m_crates;
 	std::vector<Brick*> m_bricks;
+	std::vector<Wall*> m_walls;
 	Wall m_ground;
 	Wall m_startWall;
 	Background m_background;
 	Houses m_houses;
 	ContactListener m_contactListener;
+
+	GameState m_gameState;
 
 	void checkInput();
 

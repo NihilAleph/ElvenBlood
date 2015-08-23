@@ -21,7 +21,7 @@ public:
 
 	void addKill() { m_killCount++; }
 
-	void setSighted() { m_moveState = PlayerMoveState::SIGHTED; }
+	void setSighted() { /*m_moveState = PlayerMoveState::SIGHTED; */}
 	bool isSighted() { return m_moveState == PlayerMoveState::SIGHTED; }
 
 private:
@@ -35,7 +35,7 @@ private:
 
 	int m_killCount = 0;
 
-	PlayerMoveState m_moveState = PlayerMoveState::STANDING;
+	PlayerMoveState m_moveState;
 
 	b2Fixture* m_attackSensor = nullptr;
 };

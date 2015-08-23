@@ -35,7 +35,7 @@ void Crate::draw(taengine::SpriteBatch& spriteBatch) {
 	glm::vec4 uvRect = m_tileSheet.getUVs(0);
 
 
-	spriteBatch.draw(destRect, uvRect, -1.0f, m_tileSheet.texture.id,
+	spriteBatch.draw(destRect, uvRect, -0.5f, m_tileSheet.texture.id,
 		taengine::Color(128, 128, 128, 255));
 }
 

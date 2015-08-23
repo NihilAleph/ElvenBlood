@@ -34,6 +34,17 @@ void Player::init(b2World* world, const glm::vec2& position) {
 
 	m_tileSheet.init(taengine::ResourceManager::getTexture("Sprites/anya.png"), glm::ivec2(7, 4));
 	m_drawDimensions = glm::vec2(3.0f, 3.0f);
+
+
+	m_animationSpeed = 0.15f;
+	m_animationTime = 0.0f;
+
+	m_direction = 1;
+
+	m_footContacts = 0;
+
+	m_killCount = 0;
+	m_moveState = PlayerMoveState::STANDING;
 }
 
 void Player::draw(taengine::SpriteBatch& spriteBatch) {
@@ -141,7 +152,7 @@ void Player::update(taengine::InputManager& inputManager) {
 
 			//add attack sensor fixture
 			b2PolygonShape polygonShape;
-			polygonShape.SetAsBox(1.0f, 0.2f, b2Vec2(1.0f * m_direction, -0.1f), 0);
+			polygonShape.SetAsBox(1.0f, 0.2f, b2Vec2(0.9f * m_direction, -0.1f), 0);
 			b2FixtureDef fixtureDef;
 			fixtureDef.isSensor = true;
 			fixtureDef.shape = &polygonShape;
@@ -161,7 +172,7 @@ void Player::update(taengine::InputManager& inputManager) {
 	}
 	if (inputManager.isKeyDown(SDLK_w)) {
 		if (m_footContacts > 0) {
-			body->ApplyLinearImpulse(b2Vec2(0.0f, 20.0f), position, true);
+			body->ApplyLinearImpulse(b2Vec2(0.0f, 15.0f), position, true);
 		}
 	}
 
@@ -179,7 +190,7 @@ void Player::drawDebug(taengine::DebugRenderer& renderer, taengine::Color color)
 	if (m_attackSensor) {
 
 		glm::vec4 destRect;
-		destRect.x = m_hitbox->getBody()->GetPosition().x + 1.0f * m_direction - 0.5f;
+		destRect.x = m_hitbox->getBody()->GetPosition().x + 0.9f * m_direction - 0.5f;
 		destRect.y = m_hitbox->getBody()->GetPosition().y - 0.2f;
 		destRect.z = 1.0f;
 		destRect.w = 0.2f;
