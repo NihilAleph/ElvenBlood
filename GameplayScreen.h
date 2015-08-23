@@ -35,6 +35,7 @@ public:
 private:
 	taengine::Camera2D m_camera;
 	taengine::GLSLProgram m_textureProgram;
+	taengine::GLSLProgram m_lightProgram;
 	taengine::Window* m_window;
 
 	bool m_renderDebug;
@@ -46,10 +47,10 @@ private:
 
 	Player m_player;
 	std::vector<Guardian*> m_guardians;
+	std::vector<Crate*> m_crates;
+	std::vector<Brick*> m_bricks;
 	Wall m_ground;
-	Crate m_crate;
-	Brick m_brick;
-	Brick m_brick2;
+	Wall m_startWall;
 	Background m_background;
 	Houses m_houses;
 	ContactListener m_contactListener;

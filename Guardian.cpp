@@ -1,7 +1,6 @@
 #include "Guardian.h"
 #include "Box.h"
 #include <SDL\SDL.h>
-#include <iostream>
 
 Guardian::Guardian()
 {
@@ -112,9 +111,7 @@ void Guardian::update(taengine::InputManager& inputManager) {
 }
 
 void Guardian::die() {
-	std::cout << (int)m_moveState;
 	m_moveState = GuardianMoveState::DEAD;
-	std::cout << (int)m_moveState;
 }
 
 
@@ -135,5 +132,19 @@ void Guardian::drawDebug(taengine::DebugRenderer& renderer, taengine::Color colo
 		destRect.w = 4.0f;
 
 		renderer.drawBox(destRect, color, 0.0f);
+	}
+}
+
+void Guardian::drawLight(taengine::SpriteBatch& spriteBatch) {
+
+	if (m_hitbox) {
+		glm::vec4 destRect;
+		destRect.x = m_position.x - m_range / 2.0f;
+		destRect.y = m_position.y - m_range / 2.0f;
+		destRect.z = m_range;
+		destRect.w = m_range;
+
+
+		spriteBatch.draw(destRect, glm::vec4(-1.0f, -1.0f, 2.0f, 2.0f), 0.0f, 0, taengine::Color(155, 155, 0, 128));
 	}
 }

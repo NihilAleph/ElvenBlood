@@ -12,6 +12,7 @@ public:
 	virtual void init(b2World* world, const glm::vec2& position) override;
 
 	virtual void draw(taengine::SpriteBatch& spriteBatch) override;
+	void drawLight(taengine::SpriteBatch& spriteBatch);
 	virtual void update(taengine::InputManager& inputManager) override;
 	void drawDebug(taengine::DebugRenderer& renderer, taengine::Color color);
 

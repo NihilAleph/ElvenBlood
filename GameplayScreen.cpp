@@ -38,6 +38,17 @@ void GameplayScreen::onEntry() {
 
 	m_textureProgram.linkShaders();
 
+	// Compile light shader
+	m_lightProgram.compileShaders("Shaders/lightShading.vert", "Shaders/lightShading.frag");
+
+	m_lightProgram.addAttribute("vertexPositon");
+	m_lightProgram.addAttribute("vertexColor");
+	m_lightProgram.addAttribute("vertexUV");
+
+	m_lightProgram.linkShaders();
+
+	// init of the game
+
 	m_camera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
 
 	m_camera.setPosition(glm::vec2(0.0f, 0.0f));
@@ -46,17 +57,31 @@ void GameplayScreen::onEntry() {
 	m_player.init(m_world.get(), glm::vec2(-1.0f, 0.0f));
 
 	// init guardians
-	Guardian* guardian = new Guardian;
-	guardian->setCooldown(0.0f);
-	guardian->setDirection();
-	guardian->init(m_world.get(), glm::vec2(12.0f, 0.0f));
+	m_guardians.push_back(new Guardian);
+	m_guardians.back()->setCooldown(0.0f);
+	m_guardians.back()->setDirection();
+	m_guardians.back()->init(m_world.get(), glm::vec2(16.0f, -5.0f));
 
-	m_guardians.push_back(guardian);
+	// init crates
+	m_crates.push_back(new Crate);
+	m_crates.back()->init(m_world.get(), glm::vec2(13.0f, -7.0f));
+
+	// init bricks
+
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(23.0f, -3.0f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(21.0f, -3.0f));
+
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(16.0f, -3.0f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(15.0f, -3.0f));
+
 
 	m_ground.init(m_world.get(), glm::vec2(28.0f, -9.0f), glm::vec2(84.0f, 2.0f));
-	m_crate.init(m_world.get(), glm::vec2(15.0f, -7.0f));
-	m_brick.init(m_world.get(), glm::vec2(18.0f, -5.0f));
-	m_brick2.init(m_world.get(), glm::vec2(19.0f, -5.0f));
+	m_startWall.init(m_world.get(), glm::vec2(-3.0f, 0.0f), glm::vec2(1.0f, 12.0f));
+
 	m_background.init();
 	m_houses.init();
 }
@@ -75,8 +100,8 @@ void GameplayScreen::update() {
 	if (posDiff.x < 1.0f) {
 		m_camera.move(glm::vec2(1.0f - posDiff.x, 0.0f));
 	}
-	if (posDiff.x > 8.0f) {
-		m_camera.move(glm::vec2(8.0f - posDiff.x, 0.0f));
+	if (posDiff.x > 5.0f) {
+		m_camera.move(glm::vec2(5.0f - posDiff.x, 0.0f));
 	}
 	if (posDiff.y < 0.0f) {
 		m_camera.move(glm::vec2(0.0f, 0.0f - posDiff.y));
@@ -120,9 +145,12 @@ void GameplayScreen::draw() {
 	for (auto& g : m_guardians) {
 		g->draw(m_spriteBatch);
 	}
-	m_crate.draw(m_spriteBatch);
-	m_brick2.draw(m_spriteBatch);
-	m_brick.draw(m_spriteBatch);
+	for (auto& c : m_crates) {
+		c->draw(m_spriteBatch);
+	}
+	for (auto& b : m_bricks) {
+		b->draw(m_spriteBatch);
+	}
 	m_background.draw(m_spriteBatch);
 	m_houses.draw(m_spriteBatch);
 
@@ -130,17 +158,43 @@ void GameplayScreen::draw() {
 	m_spriteBatch.renderBatch();
 	m_textureProgram.unuse();
 
+	// render light
+	m_lightProgram.use();
+
+	pUniform = m_textureProgram.getUniformLocation("P");
+	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+
+	// Additive blending
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+
+	m_spriteBatch.begin();
+	for (auto& g : m_guardians) {
+		g->drawLight(m_spriteBatch);
+	}
+
+	m_spriteBatch.end();
+	m_spriteBatch.renderBatch();
+
+	m_lightProgram.unuse();
+
+	// reset to regular alpha blending
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	if (m_renderDebug) {
 		m_player.drawDebug(m_debugRenderer, taengine::Color(255, 255, 255, 255));
 
 		for (auto& g : m_guardians) {
 			g->drawDebug(m_debugRenderer, taengine::Color(255, 255, 255, 255));
 		}
+		for (auto& c : m_crates) {
+			c->drawDebug(m_debugRenderer, taengine::Color(255, 255, 255, 255));
+		}
+		for (auto& b : m_bricks) {
+			b->drawDebug(m_debugRenderer, taengine::Color(255, 255, 255, 255));
+		}
 
 		m_ground.drawDebug(m_debugRenderer, taengine::Color(255, 255, 255, 255));
-		m_crate.drawDebug(m_debugRenderer, taengine::Color(255, 255, 255, 255));
-		m_brick.drawDebug(m_debugRenderer, taengine::Color(255, 255, 255, 255));
-		m_brick2.drawDebug(m_debugRenderer, taengine::Color(255, 255, 255, 255));
+
 		m_debugRenderer.end();
 		m_debugRenderer.render(projectionMatrix, 2.0f);
 	}
