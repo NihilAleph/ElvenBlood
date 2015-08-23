@@ -14,7 +14,7 @@ Houses::~Houses()
 void Houses::init() {
 
 	m_tileSheet.init(taengine::ResourceManager::getTexture("Sprites/houses.png"), glm::ivec2(3, 1));
-	m_drawDimensions = glm::vec2(120.0f, 30.0f);
+	m_drawDimensions = glm::vec2(75.0f, 30.0f);
 }
 
 void Houses::draw(taengine::SpriteBatch& spriteBatch) {

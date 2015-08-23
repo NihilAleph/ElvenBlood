@@ -22,7 +22,7 @@ public:
 	void addKill() { m_killCount++; }
 	int getKillCount() { return m_killCount; }
 
-	void setSighted() { m_moveState = PlayerMoveState::SIGHTED; }
+	void setSighted() { /*m_moveState = PlayerMoveState::SIGHTED;*/ }
 	bool isSighted() { return m_moveState == PlayerMoveState::SIGHTED; }
 
 	void escaped() { m_escaped = true; }

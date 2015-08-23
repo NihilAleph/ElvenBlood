@@ -14,14 +14,14 @@ Background::~Background()
 void Background::init() {
 
 	m_tileSheet.init(taengine::ResourceManager::getTexture("Sprites/city.png"), glm::ivec2(1, 1));
-	m_drawDimensions = glm::vec2(120.0f, 30.0f);
+	m_drawDimensions = glm::vec2(180.0f, 50.0f);
 	m_uv = glm::vec2(0.0f, 0.0f);
 }
 
 void Background::draw(taengine::SpriteBatch& spriteBatch) {
 	glm::vec4 destRect;
 	destRect.x = - 14.0f;
-	destRect.y = - 10;
+	destRect.y = - 15;
 	destRect.z = m_drawDimensions.x;
 	destRect.w = m_drawDimensions.y;
 
@@ -33,5 +33,5 @@ void Background::draw(taengine::SpriteBatch& spriteBatch) {
 	uvRect.w = 1.0f;
 
 	spriteBatch.draw(destRect, uvRect, -10.0f, m_tileSheet.texture.id,
-		taengine::Color(128, 128, 128, 255));
+		taengine::Color(155, 155, 155, 255));
 }

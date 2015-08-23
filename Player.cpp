@@ -110,7 +110,7 @@ void Player::draw(taengine::SpriteBatch& spriteBatch) {
 	}
 
 	spriteBatch.draw(destRect, uvRect, 1.0f, m_tileSheet.texture.id,
-		taengine::Color(128, 128, 128, 255), body->GetAngle());
+		taengine::Color(155, 155, 155, 255), body->GetAngle());
 }
 
 void Player::update(taengine::InputManager& inputManager) {

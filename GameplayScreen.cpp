@@ -28,7 +28,7 @@ void GameplayScreen::onEntry() {
 
 	m_hudSpriteBatch.init();
 
-	m_renderDebug = true;
+	m_renderDebug = false;
 	m_debugRenderer.init();
 
 	m_textureProgram.compileShaders("Shaders/textureShading.vert", "Shaders/textureShading.frag");
@@ -66,8 +66,8 @@ void GameplayScreen::loadLevel() {
 	m_hudCamera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
 	m_hudCamera.setPosition(glm::vec2(m_window->getScreenWidth() / 2.0f, m_window->getScreenHeight() / 2.0f));
 
-	//m_player.init(m_world.get(), glm::vec2(-1.0f, -7.0f));
-	m_player.init(m_world.get(), glm::vec2(103.0f, -7.0f));
+	m_player.init(m_world.get(), glm::vec2(-1.0f, -7.0f));
+	//m_player.init(m_world.get(), glm::vec2(103.0f, -7.0f));
 
 	// init guardians
 	m_guardians.clear();
@@ -370,10 +370,10 @@ void GameplayScreen::loadLevel() {
 	m_walls.push_back(new Wall);
 	m_walls.back()->init(m_world.get(), glm::vec2(-3.0f, 0.0f), glm::vec2(1.0f, 12.0f));
 
-	m_finishLine.init(m_world.get(), glm::vec2(110.0f, -0.0f), glm::vec2(1.0f, 12.0f));
+	m_finishLine.init(m_world.get(), glm::vec2(120.0f, -0.0f), glm::vec2(1.0f, 12.0f));
 
 	m_background.init();
-	//m_houses.init();
+	m_houses.init();
 }
 
 void GameplayScreen::onExit() {
@@ -522,7 +522,7 @@ void GameplayScreen::draw() {
 		b->draw(m_spriteBatch);
 	}
 	m_background.draw(m_spriteBatch);
-	//m_houses.draw(m_spriteBatch);
+	m_houses.draw(m_spriteBatch);
 
 	m_spriteBatch.end();
 	m_spriteBatch.renderBatch();
