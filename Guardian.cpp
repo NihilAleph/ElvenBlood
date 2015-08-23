@@ -109,10 +109,6 @@ void Guardian::update(taengine::InputManager& inputManager) {
 		}
 	}
 
-	// Apply air resistence
-	// b2Vec2 velocity = body->GetLinearVelocity();
-	// float friction = -1.0f;
-	// body->ApplyForce(b2Vec2(velocity.x * friction, velocity.y * friction), position, true);
 }
 
 void Guardian::die() {

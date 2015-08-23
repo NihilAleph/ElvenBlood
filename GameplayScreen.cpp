@@ -46,10 +46,10 @@ void GameplayScreen::onEntry() {
 	m_player.init(m_world.get(), glm::vec2(-1.0f, 0.0f));
 
 	// init guardians
-	Guardian guardian;
-	guardian.setCooldown(0.0f);
-	guardian.setDirection();
-	guardian.init(m_world.get(), glm::vec2(12.0f, 0.0f));
+	Guardian* guardian = new Guardian;
+	guardian->setCooldown(0.0f);
+	guardian->setDirection();
+	guardian->init(m_world.get(), glm::vec2(12.0f, 0.0f));
 
 	m_guardians.push_back(guardian);
 
@@ -92,7 +92,7 @@ void GameplayScreen::update() {
 		m_player.update(m_game->getInputManager());
 
 		for (auto& g : m_guardians) {
-			g.update(m_game->getInputManager());
+			g->update(m_game->getInputManager());
 		}
 	}
 
@@ -118,7 +118,7 @@ void GameplayScreen::draw() {
 
 	m_player.draw(m_spriteBatch);
 	for (auto& g : m_guardians) {
-		g.draw(m_spriteBatch);
+		g->draw(m_spriteBatch);
 	}
 	m_crate.draw(m_spriteBatch);
 	m_brick2.draw(m_spriteBatch);
@@ -134,7 +134,7 @@ void GameplayScreen::draw() {
 		m_player.drawDebug(m_debugRenderer, taengine::Color(255, 255, 255, 255));
 
 		for (auto& g : m_guardians) {
-			g.drawDebug(m_debugRenderer, taengine::Color(255, 255, 255, 255));
+			g->drawDebug(m_debugRenderer, taengine::Color(255, 255, 255, 255));
 		}
 
 		m_ground.drawDebug(m_debugRenderer, taengine::Color(255, 255, 255, 255));

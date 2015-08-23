@@ -45,7 +45,7 @@ private:
 	std::unique_ptr<b2World> m_world = nullptr;
 
 	Player m_player;
-	std::vector<Guardian> m_guardians;
+	std::vector<Guardian*> m_guardians;
 	Wall m_ground;
 	Crate m_crate;
 	Brick m_brick;
