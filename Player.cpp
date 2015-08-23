@@ -44,6 +44,7 @@ void Player::init(b2World* world, const glm::vec2& position) {
 	m_footContacts = 0;
 
 	m_killCount = 0;
+	m_escaped = false;
 	m_moveState = PlayerMoveState::STANDING;
 }
 
@@ -66,13 +67,13 @@ void Player::draw(taengine::SpriteBatch& spriteBatch) {
 
 	tileIndex += (int)m_animationTime % numTiles;*/
 	int tileRow = 0;
-	if (m_killCount < 2) {
+	if (m_killCount < 1) {
 		tileRow = 3;
 	}
-	else if (m_killCount < 4) {
+	else if (m_killCount < 3) {
 		tileRow = 2;
 	}
-	else if (m_killCount < 6) {
+	else if (m_killCount < 5) {
 		tileRow = 1;
 	}
 	int tileIndex = 0;

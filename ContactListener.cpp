@@ -23,6 +23,12 @@ void ContactListener::BeginContact(b2Contact* contact) {
 		if (fixtureCategoryA == FixtureTag::PLAYER_FOOT) {
 			void* bodyUserDataA = contact->GetFixtureA()->GetBody()->GetUserData();
 			static_cast<Player*>(bodyUserDataA)->addFootContacts();
+			if (fixtureCategoryB == FixtureTag::ENEMY_BODY) {
+
+				void* bodyUserDataB = contact->GetFixtureB()->GetBody()->GetUserData();
+				static_cast<Guardian*>(bodyUserDataB)->foundAnya();
+				static_cast<Player*>(bodyUserDataA)->setSighted();
+			}
 			
 		}
 
@@ -42,12 +48,26 @@ void ContactListener::BeginContact(b2Contact* contact) {
 			void* bodyUserDataB = contact->GetFixtureB()->GetBody()->GetUserData();
 			static_cast<Player*>(bodyUserDataB)->setSighted();
 		}
+
+		// Finish Sensor
+		if (fixtureCategoryA == FixtureTag::SENSOR) {
+
+			void* bodyUserDataB = contact->GetFixtureB()->GetBody()->GetUserData();
+			static_cast<Player*>(bodyUserDataB)->escaped();
+		}
 	}
+
 	//check if fixture B was the foot sensor
 	if (contact->GetFixtureB()->IsSensor()) {
 		if (fixtureCategoryB == FixtureTag::PLAYER_FOOT) {
 			void* bodyUserDataB = contact->GetFixtureB()->GetBody()->GetUserData();
 			static_cast<Player*>(bodyUserDataB)->addFootContacts();
+			if (fixtureCategoryA == FixtureTag::ENEMY_BODY) {
+
+				void* bodyUserDataA = contact->GetFixtureA()->GetBody()->GetUserData();
+				static_cast<Guardian*>(bodyUserDataA)->foundAnya();
+				static_cast<Player*>(bodyUserDataB)->setSighted();
+			}
 		}
 
 		// attack sensor
@@ -66,6 +86,13 @@ void ContactListener::BeginContact(b2Contact* contact) {
 
 			void* bodyUserDataA = contact->GetFixtureA()->GetBody()->GetUserData();
 			static_cast<Player*>(bodyUserDataA)->setSighted();
+		}
+
+
+		// Finish Sensor
+		if (fixtureCategoryB == FixtureTag::SENSOR) {
+			void* bodyUserDataA = contact->GetFixtureA()->GetBody()->GetUserData();
+			static_cast<Player*>(bodyUserDataA)->escaped();
 		}
 	}
 }

@@ -12,7 +12,7 @@ enum FixtureTag {
 	ENEMY_BODY = 0x0008,
 	ENEMY_SIGHT = 0x0010,
 	WALL = 0x0020,
-	BOUNDARY = 0x0040,
+	SENSOR = 0x0040,
 	ALL = 0XFFFF
 };
 

@@ -26,7 +26,9 @@ void GameplayScreen::onEntry() {
 	m_spriteBatch.init();
 	m_spriteFont = new taengine::SpriteFont("Fonts/OpenSans-Regular.ttf", 64);
 
-	m_renderDebug = false;
+	m_hudSpriteBatch.init();
+
+	m_renderDebug = true;
 	m_debugRenderer.init();
 
 	m_textureProgram.compileShaders("Shaders/textureShading.vert", "Shaders/textureShading.frag");
@@ -61,8 +63,11 @@ void GameplayScreen::loadLevel() {
 	m_camera.setPosition(glm::vec2(0.0f, 0.0f));
 	m_camera.setScale(32.0f);
 
-	m_player.init(m_world.get(), glm::vec2(-1.0f, -7.0f));
-	//m_player.init(m_world.get(), glm::vec2(90.0f, -7.0f));
+	m_hudCamera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
+	m_hudCamera.setPosition(glm::vec2(m_window->getScreenWidth() / 2.0f, m_window->getScreenHeight() / 2.0f));
+
+	//m_player.init(m_world.get(), glm::vec2(-1.0f, -7.0f));
+	m_player.init(m_world.get(), glm::vec2(103.0f, -7.0f));
 
 	// init guardians
 	m_guardians.clear();
@@ -365,6 +370,8 @@ void GameplayScreen::loadLevel() {
 	m_walls.push_back(new Wall);
 	m_walls.back()->init(m_world.get(), glm::vec2(-3.0f, 0.0f), glm::vec2(1.0f, 12.0f));
 
+	m_finishLine.init(m_world.get(), glm::vec2(110.0f, -0.0f), glm::vec2(1.0f, 12.0f));
+
 	m_background.init();
 	//m_houses.init();
 }
@@ -387,8 +394,9 @@ void GameplayScreen::update() {
 		loadLevel();
 		m_gameState = GameState::PLAY;
 		break;
-	case GameState::PLAY :
+	case GameState::PLAY:
 	case GameState::SIGHTED:
+	case GameState::END:
 		cameraPosition = m_camera.getPosition();
 		playerPosition = m_player.getPosition();
 		posDiff = cameraPosition - playerPosition;
@@ -407,6 +415,7 @@ void GameplayScreen::update() {
 		}
 
 		m_camera.update();
+		m_hudCamera.update();
 
 		if (m_gameState == GameState::PLAY) {
 			m_player.update(m_game->getInputManager());
@@ -420,6 +429,10 @@ void GameplayScreen::update() {
 
 		if (m_player.isSighted()) {
 			m_gameState = GameState::SIGHTED;
+		}
+
+		if (m_player.hasEscaped()) {
+			m_gameState = GameState::END;
 		}
 
 		if (m_game->getInputManager().isKeyPressed(SDLK_r)) {
@@ -450,6 +463,45 @@ void GameplayScreen::draw() {
 	m_spriteBatch.begin(taengine::GlyphSortType::FRONT_TO_BACK);
 
 	m_player.draw(m_spriteBatch);
+
+	if (m_player.hasEscaped()) {
+
+		char buffer[256];
+
+		taengine::Color color;
+		if (m_player.getKillCount() < 1) {
+			sprintf_s(buffer, "I hope peace can be restored...");
+			color.red = 0;
+			color.green = 200;
+			color.blue = 0;
+			color.alpha = 255;
+		}
+		else if (m_player.getKillCount() < 3) {
+			sprintf_s(buffer, "Mom, dad... why is this happening...?");
+			color.red = 111;
+			color.green = 122;
+			color.blue = 35;
+			color.alpha = 255;
+		}
+		else if (m_player.getKillCount() < 5) {
+			sprintf_s(buffer, "I.. What I... Did I kill all those people...?");
+			color.red = 128;
+			color.green = 58;
+			color.blue = 20;
+			color.alpha = 255;
+		}
+		else {
+			sprintf_s(buffer, "I will kill you all, human scum!!");
+			color.red = 186;
+			color.green = 0;
+			color.blue = 0;
+			color.alpha = 255;
+		}
+
+		m_spriteFont->draw(m_spriteBatch, buffer, m_player.getPosition() + glm::vec2(0.0f,1.5f), glm::vec2(0.01f),
+			2.0f, color, taengine::Justification::MIDDLE);
+
+	}
 
 	for (auto& g : m_guardians) {
 		g->draw(m_spriteBatch);
@@ -498,6 +550,88 @@ void GameplayScreen::draw() {
 	// reset to regular alpha blending
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+
+	// Draw hud
+
+	m_textureProgram.use();
+
+	glActiveTexture(GL_TEXTURE0);
+
+	char buffer[256];
+
+	GLuint textureLocation = m_textureProgram.getUniformLocation("mySampler");
+	glUniform1i(textureLocation, 0);
+
+	GLuint pLocation = m_textureProgram.getUniformLocation("P");
+	glm::mat4 cameraMatrix = m_hudCamera.getCameraMatrix();
+	glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
+
+
+	m_hudSpriteBatch.begin();
+
+	if (m_gameState == GameState::SIGHTED) {
+		sprintf_s(buffer, "You were sighted!");
+
+		m_spriteFont->draw(m_hudSpriteBatch, buffer, glm::vec2(m_window->getScreenWidth() / 2.0f, m_window->getScreenHeight() / 2.0f + 64),
+			glm::vec2(0.5f), 0.0f, taengine::Color(155, 155, 0, 255), taengine::Justification::MIDDLE);
+
+
+		sprintf_s(buffer, "Retry? (Press R)");
+
+		m_spriteFont->draw(m_hudSpriteBatch, buffer, glm::vec2(m_window->getScreenWidth() / 2.0f, m_window->getScreenHeight() / 2.0f + 32),
+			glm::vec2(0.5f), 0.0f, taengine::Color(155, 155, 0, 255), taengine::Justification::MIDDLE);
+
+	}
+
+	if (m_gameState == GameState::END) {
+		taengine::Color color;
+		if (m_player.getKillCount() < 1) {
+			sprintf_s(buffer, "You're free! You shall restore peace once again!");
+			color.red = 0;
+			color.green = 200;
+			color.blue = 0;
+			color.alpha = 255;
+		}
+		else if (m_player.getKillCount() < 3) {
+			sprintf_s(buffer, "You escaped, but this trauma will follow you forever");
+			color.red = 111;
+			color.green = 122;
+			color.blue = 35;
+			color.alpha = 255;
+		}
+		else if (m_player.getKillCount() < 5) {
+			sprintf_s(buffer, "You're safe, but your mind isn't...");
+			color.red = 128;
+			color.green = 58;
+			color.blue = 20;
+			color.alpha = 255;
+		}
+		else {
+			sprintf_s(buffer, "You survived, but you'll only rest when all humans are dead!");
+			color.red = 186;
+			color.green = 0;
+			color.blue = 0;
+			color.alpha = 255;
+
+		}
+
+		m_spriteFont->draw(m_hudSpriteBatch, buffer, glm::vec2(m_window->getScreenWidth() / 2.0f, m_window->getScreenHeight() / 2.0f + 64),
+			glm::vec2(0.5f), 0.0f, color, taengine::Justification::MIDDLE);
+
+
+		sprintf_s(buffer, "Play again? (Press R)");
+
+		m_spriteFont->draw(m_hudSpriteBatch, buffer, glm::vec2(m_window->getScreenWidth() / 2.0f, m_window->getScreenHeight() / 2.0f + 32),
+			glm::vec2(0.5f), 0.0f, color, taengine::Justification::MIDDLE);
+
+	}
+
+	m_hudSpriteBatch.end();
+	m_hudSpriteBatch.renderBatch();
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	m_textureProgram.unuse();
+
 	if (m_renderDebug) {
 		m_player.drawDebug(m_debugRenderer, taengine::Color(255, 255, 255, 255));
 
@@ -514,6 +648,8 @@ void GameplayScreen::draw() {
 		for (auto& w : m_walls) {
 			w->drawDebug(m_debugRenderer, taengine::Color(0, 0, 255, 255));
 		}
+
+		m_finishLine.drawDebug(m_debugRenderer, taengine::Color(255, 0, 0, 255));
 
 		m_debugRenderer.end();
 		m_debugRenderer.render(projectionMatrix, 2.0f);

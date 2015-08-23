@@ -11,6 +11,7 @@
 #include "Wall.h"
 #include "Crate.h"
 #include "Brick.h"
+#include "Sensor.h"
 #include "Background.h"
 #include "Houses.h"
 #include "ContactListener.h"
@@ -45,6 +46,9 @@ private:
 	taengine::GLSLProgram m_lightProgram;
 	taengine::Window* m_window;
 
+	taengine::Camera2D m_hudCamera;
+	taengine::SpriteBatch m_hudSpriteBatch;
+
 	bool m_renderDebug;
 	taengine::DebugRenderer m_debugRenderer;
 
@@ -58,6 +62,7 @@ private:
 	std::vector<Crate*> m_crates;
 	std::vector<Brick*> m_bricks;
 	std::vector<Wall*> m_walls;
+	Sensor m_finishLine;
 
 	Background m_background;
 	Houses m_houses;

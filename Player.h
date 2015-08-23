@@ -20,9 +20,13 @@ public:
 	void subFootContacts() { m_footContacts--; }
 
 	void addKill() { m_killCount++; }
+	int getKillCount() { return m_killCount; }
 
-	void setSighted() { /*m_moveState = PlayerMoveState::SIGHTED; */}
+	void setSighted() { m_moveState = PlayerMoveState::SIGHTED; }
 	bool isSighted() { return m_moveState == PlayerMoveState::SIGHTED; }
+
+	void escaped() { m_escaped = true; }
+	bool hasEscaped() { return m_escaped; }
 
 private:
 
@@ -34,6 +38,7 @@ private:
 	int m_footContacts = 0;
 
 	int m_killCount = 0;
+	bool m_escaped = false;
 
 	PlayerMoveState m_moveState;
 
