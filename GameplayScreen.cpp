@@ -28,7 +28,7 @@ void GameplayScreen::onEntry() {
 	m_world.get()->SetContactListener(&m_contactListener);
 
 	m_spriteBatch.init();
-	m_renderDebug = false;
+	m_renderDebug = true;
 	m_debugRenderer.init();
 
 	m_textureProgram.compileShaders("Shaders/textureShading.vert", "Shaders/textureShading.frag");
@@ -44,6 +44,7 @@ void GameplayScreen::onEntry() {
 	m_camera.setScale(32.0f);
 
 	m_player.init(m_world.get(), glm::vec2(-1.0f, 0.0f));
+	m_guardian.init(m_world.get(), glm::vec2(0.0f, 0.0f));
 	m_ground.init(m_world.get(), glm::vec2(28.0f, -9.0f), glm::vec2(84.0f, 2.0f));
 	m_background.init();
 	m_houses.init();
@@ -77,6 +78,7 @@ void GameplayScreen::update() {
 	checkInput();
 
 	m_player.update(m_game->getInputManager());
+	m_guardian.update(m_game->getInputManager());
 
 	m_world->Step(1.0f / 60.0f, 6, 2);
 }
@@ -99,6 +101,7 @@ void GameplayScreen::draw() {
 	m_spriteBatch.begin(taengine::GlyphSortType::FRONT_TO_BACK);
 
 	m_player.draw(m_spriteBatch);
+	m_guardian.draw(m_spriteBatch);
 	m_background.draw(m_spriteBatch);
 	m_houses.draw(m_spriteBatch);
 
@@ -107,7 +110,8 @@ void GameplayScreen::draw() {
 	m_textureProgram.unuse();
 
 	if (m_renderDebug) {
-		m_player.drawDebug(m_debugRenderer, taengine::Color(255,255,255,255));
+		m_player.drawDebug(m_debugRenderer, taengine::Color(255, 255, 255, 255));
+		m_guardian.drawDebug(m_debugRenderer, taengine::Color(255, 255, 255, 255));
 		m_ground.drawDebug(m_debugRenderer, taengine::Color(255, 255, 255, 255));
 		m_debugRenderer.end();
 		m_debugRenderer.render(projectionMatrix, 2.0f);

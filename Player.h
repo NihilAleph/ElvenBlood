@@ -18,6 +18,8 @@ public:
 	}
 	const float FORCE = 20.0f;
 
+	void drawDebug(taengine::DebugRenderer& renderer, taengine::Color color);
+
 	void addFootContacts() { m_footContacts++; }
 	void subFootContacts() { m_footContacts--; }
 
@@ -26,10 +28,12 @@ private:
 	float m_animationSpeed = 0.15f;
 	float m_animationTime = 0.0f;
 
-	bool m_facingLeft = false;
+	int m_direction = 1; // or -1
 
 	int m_footContacts = 0;
 
 	PlayerMoveState m_moveState = PlayerMoveState::STANDING;
+
+	b2Fixture* m_attackSensor = nullptr;
 };
 

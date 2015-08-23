@@ -23,7 +23,7 @@ void Player::init(b2World* world, const glm::vec2& position) {
 
 	//add foot sensor fixture
 	b2PolygonShape polygonShape;
-	polygonShape.SetAsBox(0.5f, 0.2f, b2Vec2(0, -1.25f), 0);
+	polygonShape.SetAsBox(0.45f, 0.2f, b2Vec2(0, -1.25f), 0);
 	b2FixtureDef fixtureDef;
 	fixtureDef.isSensor = true;
 	fixtureDef.shape = &polygonShape;
@@ -79,12 +79,12 @@ void Player::draw(taengine::SpriteBatch& spriteBatch) {
 
 	uvRect = m_tileSheet.getUVs(tileIndex);
 
-	if (m_facingLeft) {
+	if (m_direction == -1) {
 		uvRect.x += 1.0f / m_tileSheet.dimensions.x;
 		uvRect.z *= -1;
 	}
 
-	spriteBatch.draw(destRect, uvRect, 0.0f, m_tileSheet.texture.id,
+	spriteBatch.draw(destRect, uvRect, 1.0f, m_tileSheet.texture.id,
 		taengine::Color(255, 255, 255, 255), body->GetAngle());
 }
 
@@ -92,14 +92,20 @@ void Player::update(taengine::InputManager& inputManager) {
 	b2Body* body = m_hitbox->getBody();
 	b2Vec2 position = body->GetPosition();
 
+	// Eliminate any attack sensor
+	if (m_attackSensor) {
+		body->DestroyFixture(m_attackSensor);
+		m_attackSensor = nullptr;
+	}
+
 	m_moveState = PlayerMoveState::STANDING;
 
 	if (body->GetLinearVelocity().x > 0.3f) {
 		m_moveState = PlayerMoveState::WALKING;
-		m_facingLeft = false;
+		m_direction = 1;
 	} else if (body->GetLinearVelocity().x < -0.3f) {
 		m_moveState = PlayerMoveState::WALKING;
-		m_facingLeft = true;
+		m_direction = -1;
 	}
 	else {
 		body->SetLinearVelocity(b2Vec2(body->GetLinearVelocity().x * 0.9f, body->GetLinearVelocity().y));
@@ -116,6 +122,15 @@ void Player::update(taengine::InputManager& inputManager) {
 	if (inputManager.isKeyDown(SDLK_SPACE)) {
 		if (m_moveState == PlayerMoveState::STANDING) {
 			m_moveState = PlayerMoveState::ATTACKING;
+
+			//add attack sensor fixture
+			b2PolygonShape polygonShape;
+			polygonShape.SetAsBox(1.0f, 0.2f, b2Vec2(1.0f * m_direction, -0.1f), 0);
+			b2FixtureDef fixtureDef;
+			fixtureDef.isSensor = true;
+			fixtureDef.shape = &polygonShape;
+			m_attackSensor = m_hitbox->getBody()->CreateFixture(&fixtureDef);
+			m_attackSensor->SetUserData((void*)4);
 		}
 	}
 
@@ -137,4 +152,20 @@ void Player::update(taengine::InputManager& inputManager) {
 	// b2Vec2 velocity = body->GetLinearVelocity();
 	// float friction = -1.0f;
 	// body->ApplyForce(b2Vec2(velocity.x * friction, velocity.y * friction), position, true);
+}
+
+
+void Player::drawDebug(taengine::DebugRenderer& renderer, taengine::Color color) {
+	m_hitbox->draw(renderer, color);
+
+	if (m_attackSensor) {
+
+		glm::vec4 destRect;
+		destRect.x = m_hitbox->getBody()->GetPosition().x + 1.0f * m_direction - 0.5f;
+		destRect.y = m_hitbox->getBody()->GetPosition().y - 0.2f;
+		destRect.z = 1.0f;
+		destRect.w = 0.2f;
+
+		renderer.drawBox(destRect, color, 0.0f);
+	}
 }

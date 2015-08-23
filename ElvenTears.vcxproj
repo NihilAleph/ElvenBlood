@@ -80,6 +80,7 @@
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="ContactListener.cpp" />
     <ClCompile Include="GameplayScreen.cpp" />
+    <ClCompile Include="Guardian.cpp" />
     <ClCompile Include="Houses.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -93,6 +94,7 @@
     <ClInclude Include="Box.h" />
     <ClInclude Include="ContactListener.h" />
     <ClInclude Include="GameplayScreen.h" />
+    <ClInclude Include="Guardian.h" />
     <ClInclude Include="Houses.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Shape.h" />

@@ -14,9 +14,9 @@ Guardian::~Guardian()
 
 void Guardian::init(b2World* world, const glm::vec2& position) {
 	m_hitbox = new Box;
-	glm::vec2 dimensions(1.0f, 3.5f);
+	glm::vec2 dimensions(1.5f, 4.0f);
 	static_cast<Box*> (m_hitbox)->init(world, b2_dynamicBody, position, true, false,
-		dimensions, 1.0f, 1.0f, 0.0f, false, BodyType::PLAYER, BodyType::ALL);
+		dimensions, 1.0f, 1.0f, 0.0f, false, BodyType::ENEMY, BodyType::ALL);
 
 	m_hitbox->getBody()->SetLinearDamping(2.0f);
 	m_hitbox->getBody()->SetUserData(this);
@@ -38,10 +38,15 @@ void Guardian::draw(taengine::SpriteBatch& spriteBatch) {
 	glm::vec4 destRect;
 	glm::vec4 uvRect;
 
-	b2Body* body = m_hitbox->getBody();
 
-	destRect.x = body->GetPosition().x - m_drawDimensions.x / 2;
-	destRect.y = body->GetPosition().y - m_drawDimensions.x / 2;
+	if (m_hitbox) {
+		b2Body* body = m_hitbox->getBody();
+		m_position.x = body->GetPosition().x;
+		m_position.y = body->GetPosition().y;
+	}
+
+	destRect.x = m_position.x - m_drawDimensions.x / 2;
+	destRect.y = m_position.y - m_drawDimensions.x / 2;
 	destRect.z = m_drawDimensions.x;
 	destRect.w = m_drawDimensions.y;
 
@@ -52,37 +57,56 @@ void Guardian::draw(taengine::SpriteBatch& spriteBatch) {
 	m_animationTime += m_animationSpeed;
 
 	tileIndex += (int)m_animationTime % numTiles;*/
-	int tileIndex = 0;
-	int numTiles = 0;
+	int tileIndex;
 
 	switch (m_moveState) {
 	case GuardianMoveState::DEAD:
 		tileIndex = 1;
 		break;
 	default:
-		m_animationTime = 0;
-
+		tileIndex = 0;
 	}
 
 	uvRect = m_tileSheet.getUVs(tileIndex);
 
-	if (m_facingLeft) {
+	if (m_direction == -1) {
 		uvRect.x += 1.0f / m_tileSheet.dimensions.x;
 		uvRect.z *= -1;
 	}
 
 	spriteBatch.draw(destRect, uvRect, 0.0f, m_tileSheet.texture.id,
-		taengine::Color(255, 255, 255, 255), body->GetAngle());
+		taengine::Color(255, 255, 255, 255), 0.0f);
 }
 
 void Guardian::update(taengine::InputManager& inputManager) {
-	b2Body* body = m_hitbox->getBody();
-	b2Vec2 position = body->GetPosition();
 
-	m_moveState = GuardianMoveState::STANDING;
+	if (m_moveState == GuardianMoveState::DEAD && m_hitbox) {
+		m_hitbox->getBody()->GetWorld()->DestroyBody(m_hitbox->getBody());
+		m_hitbox = nullptr;
+	}
+
+	if (m_moveState == GuardianMoveState::STANDING) {
+		m_counter += 1.0f / 60.0f;
+		if (m_counter > m_cooldown) {
+			m_counter = 0.0f;
+			m_direction *= -1;
+		}
+	}
 
 	// Apply air resistence
 	// b2Vec2 velocity = body->GetLinearVelocity();
 	// float friction = -1.0f;
 	// body->ApplyForce(b2Vec2(velocity.x * friction, velocity.y * friction), position, true);
+}
+
+void Guardian::die() {
+
+	m_moveState = GuardianMoveState::DEAD;
+}
+
+
+void Guardian::drawDebug(taengine::DebugRenderer& renderer, taengine::Color color) {
+	if (m_hitbox) {
+		m_hitbox->draw(renderer, color);
+	}
 }

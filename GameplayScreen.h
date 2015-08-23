@@ -6,6 +6,7 @@
 #include <taengine\DebugRenderer.h>
 #include <Box2D\Box2D.h>
 #include "Player.h"
+#include "Guardian.h"
 #include "Wall.h"
 #include "Background.h"
 #include "Houses.h"
@@ -42,6 +43,7 @@ private:
 	std::unique_ptr<b2World> m_world = nullptr;
 
 	Player m_player;
+	Guardian m_guardian;
 	Wall m_ground;
 	Background m_background;
 	Houses m_houses;

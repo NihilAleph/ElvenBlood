@@ -27,9 +27,6 @@ public:
 		return glm::vec2(m_hitbox->getBody()->GetPosition().x, m_hitbox->getBody()->GetPosition().y);
 	}
 
-	const float GRAVITY = 9.81f;
-
-
 	virtual void draw(taengine::SpriteBatch& spriteBatch) {};
 	virtual void update(taengine::InputManager& inputManager) {};
 	virtual int getCategory() = 0;

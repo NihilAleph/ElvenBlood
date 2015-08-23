@@ -1,7 +1,7 @@
 #pragma once
 #include "Body.h"
 
-enum class EnemyMoveState { STANDING, WALKING, DEAD };
+enum class GuardianMoveState { STANDING, WALKING, DEAD };
 
 class Guardian : public Body
 {
@@ -16,16 +16,20 @@ public:
 	virtual int getCategory() override {
 		return BodyType::ENEMY;
 	}
+	void drawDebug(taengine::DebugRenderer& renderer, taengine::Color color);
+
+	void die();
 
 private:
 
-	float m_animationSpeed = 0.15f;
-	float m_animationTime = 0.0f;
+	float m_cooldown = 3.0f;
+	float m_counter = 0.0f;
 
-	bool m_facingLeft = false;
+	int m_direction = 1; // ou -1
 
-	int m_footContacts = 0;
+	glm::vec2 m_position;
 
-	EnemyMoveState m_moveState = EnemyMoveState::STANDING;
+	GuardianMoveState m_moveState = GuardianMoveState::STANDING;
+
 };
 
