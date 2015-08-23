@@ -13,7 +13,7 @@ Crate::~Crate()
 
 void Crate::init(b2World* world, const glm::vec2& position, uint16 maskBits) {
 	m_hitbox = new Box;
-	glm::vec2 dimensions(2.0f, 2.5f);
+	glm::vec2 dimensions(2.25f, 2.5f);
 	static_cast<Box*>(m_hitbox)->init(world, b2_staticBody, position, true, false, dimensions,
 		1.0f, 0.0f, 0.0f, false, FixtureTag::WALL, maskBits);
 

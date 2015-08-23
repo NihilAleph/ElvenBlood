@@ -60,6 +60,7 @@ void GameplayScreen::loadLevel() {
 	m_camera.setScale(32.0f);
 
 	m_player.init(m_world.get(), glm::vec2(-1.0f, -7.0f));
+	//m_player.init(m_world.get(), glm::vec2(90.0f, -7.0f));
 
 	// init guardians
 	m_guardians.clear();
@@ -67,13 +68,14 @@ void GameplayScreen::loadLevel() {
 	m_guardians.push_back(new Guardian);
 	m_guardians.back()->init(m_world.get(), glm::vec2(16.0f, -6.0f), 0.0f, 5.0f, -1);
 	m_guardians.push_back(new Guardian);
-	m_guardians.back()->init(m_world.get(), glm::vec2(34.0f, -6.0f), 5.0f, 5.0f, -1);
+	m_guardians.back()->init(m_world.get(), glm::vec2(34.0f, -6.0f), 4.5f, 5.0f, -1);
+	m_guardians.back()->setCounter(0.5f);
 
 	m_guardians.push_back(new Guardian);
-	m_guardians.back()->init(m_world.get(), glm::vec2(51.0f, -0.5f), 5.0f, 5.0f, 1);
+	m_guardians.back()->init(m_world.get(), glm::vec2(50.0f, -0.5f), 3.5f, 5.0f, -1);
 
 	m_guardians.push_back(new Guardian);
-	m_guardians.back()->init(m_world.get(), glm::vec2(68.0f, -3.25f), 6.0f, 5.0f, 1);
+	m_guardians.back()->init(m_world.get(), glm::vec2(68.0f, -3.25f), 4.5f, 5.0f, 1);
 
 	m_guardians.push_back(new Guardian);
 	m_guardians.back()->init(m_world.get(), glm::vec2(95.0f, -6.0f), 3.5f, 5.0f, 1);
@@ -81,6 +83,7 @@ void GameplayScreen::loadLevel() {
 	m_guardians.back()->init(m_world.get(), glm::vec2(95.0f, 3.0f), 4.5f, 5.0f, -1);
 	m_guardians.push_back(new Guardian);
 	m_guardians.back()->init(m_world.get(), glm::vec2(95.0f, 13.0f), 3.5f, 5.0f, -1);
+	m_guardians.back()->setCounter(0.5f);
 
 	// init crates
 	m_crates.clear();
@@ -99,42 +102,74 @@ void GameplayScreen::loadLevel() {
 
 	// init bricks
 	m_bricks.clear();
+	m_walls.clear();
 
-
-	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(102.0f, 10.0f));
-	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(102.0f, 9.0f));
-	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(102.0f, 8.0f));
-	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(102.0f, 7.0f));
 	m_bricks.push_back(new Brick);
 	m_bricks.back()->init(m_world.get(), glm::vec2(102.0f, 6.0f));
 	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(103.0f, 5.0f));
+	m_bricks.back()->init(m_world.get(), glm::vec2(102.0f, 6.5f));
 	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(103.0f, 4.0f));
+	m_bricks.back()->init(m_world.get(), glm::vec2(102.0f, 7.0f));
 	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(103.0f, 3.0f));
+	m_bricks.back()->init(m_world.get(), glm::vec2(102.0f, 7.5f));
 	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(103.0f, 2.0f));
+	m_bricks.back()->init(m_world.get(), glm::vec2(102.0f, 8.0f));
 	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(103.0f, 1.0f));
+	m_bricks.back()->init(m_world.get(), glm::vec2(102.0f, 8.5f));
 	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(103.0f, 0.0f));
+	m_bricks.back()->init(m_world.get(), glm::vec2(102.0f, 9.0f));
 	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(103.0f, -1.0f));
+	m_bricks.back()->init(m_world.get(), glm::vec2(102.0f, 9.5f));
 	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(103.0f, -2.0f));
+	m_bricks.back()->init(m_world.get(), glm::vec2(102.0f, 10.0f));
+
+	m_walls.push_back(new Wall);
+	m_walls.back()->init(m_world.get(), glm::vec2(102.0f, 8.0f), glm::vec2(1.1f, 4.75f));
+
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(103.0f, -4.0f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(103.0f, -3.5f));
 	m_bricks.push_back(new Brick);
 	m_bricks.back()->init(m_world.get(), glm::vec2(103.0f, -3.0f));
 	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(103.0f, -4.0f));
+	m_bricks.back()->init(m_world.get(), glm::vec2(103.0f, -2.5f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(103.0f, -2.0f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(103.0f, -1.5f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(103.0f, -1.0f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(103.0f, -0.5f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(103.0f, 0.0f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(103.0f, 0.5f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(103.0f, 1.0f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(103.0f, 1.5f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(103.0f, 2.0f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(103.0f, 2.5f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(103.0f, 3.0f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(103.0f, 3.5f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(103.0f, 4.0f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(103.0f, 4.5f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(103.0f, 5.0f));
 
+	m_walls.push_back(new Wall);
+	m_walls.back()->init(m_world.get(), glm::vec2(103.0f, 0.5f), glm::vec2(1.1f, 9.75f));
 
 	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(102.0f, -3.0f));
+	m_bricks.back()->init(m_world.get(), glm::vec2(101.5f, -3.0f));
 
 	m_bricks.push_back(new Brick);
 	m_bricks.back()->init(m_world.get(), glm::vec2(99.5f, 8.0f));
@@ -157,6 +192,9 @@ void GameplayScreen::loadLevel() {
 	m_bricks.back()->init(m_world.get(), glm::vec2(90.0f, 10.5f));
 	m_bricks.push_back(new Brick);
 	m_bricks.back()->init(m_world.get(), glm::vec2(89.0f, 10.5f));
+
+	m_walls.push_back(new Wall);
+	m_walls.back()->init(m_world.get(), glm::vec2(93.0f, 10.5f), glm::vec2(9.0f, 0.85f));
 
 	m_bricks.push_back(new Brick);
 	m_bricks.back()->init(m_world.get(), glm::vec2(84.5f, 8.0f));
@@ -186,43 +224,79 @@ void GameplayScreen::loadLevel() {
 	m_bricks.push_back(new Brick);
 	m_bricks.back()->init(m_world.get(), glm::vec2(88.0f, 0.5f));
 
+	m_walls.push_back(new Wall);
+	m_walls.back()->init(m_world.get(), glm::vec2(92.5f, 0.5f), glm::vec2(10.0f, 0.85f));
+
 	m_bricks.push_back(new Brick);
 	m_bricks.back()->init(m_world.get(), glm::vec2(85.0f, 0.5f));
 	m_bricks.push_back(new Brick);
 	m_bricks.back()->init(m_world.get(), glm::vec2(83.0f, -3.0f));
 
 
-
-	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(83.0f, 10.0f));
-	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(83.0f, 9.0f));
-	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(83.0f, 8.0f));
-	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(83.0f, 7.0f));
 	m_bricks.push_back(new Brick);
 	m_bricks.back()->init(m_world.get(), glm::vec2(83.0f, 6.0f));
 	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(82.0f, 5.0f));
+	m_bricks.back()->init(m_world.get(), glm::vec2(83.0f, 6.5f));
 	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(82.0f, 4.0f));
+	m_bricks.back()->init(m_world.get(), glm::vec2(83.0f, 7.0f));
 	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(82.0f, 3.0f));
+	m_bricks.back()->init(m_world.get(), glm::vec2(83.0f, 7.5f));
 	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(82.0f, 2.0f));
+	m_bricks.back()->init(m_world.get(), glm::vec2(83.0f, 8.0f));
 	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(82.0f, 1.0f));
+	m_bricks.back()->init(m_world.get(), glm::vec2(83.0f, 8.5f));
 	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(82.0f, 0.0f));
+	m_bricks.back()->init(m_world.get(), glm::vec2(83.0f, 9.0f));
 	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(82.0f, -1.0f));
+	m_bricks.back()->init(m_world.get(), glm::vec2(83.0f, 9.5f));
 	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(82.0f, -2.0f));
+	m_bricks.back()->init(m_world.get(), glm::vec2(83.0f, 10.0f));
+
+	m_walls.push_back(new Wall);
+	m_walls.back()->init(m_world.get(), glm::vec2(83.0f, 8.0f), glm::vec2(1.1f, 4.75f));
+
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(82.0f, -4.0f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(82.0f, -3.5f));
 	m_bricks.push_back(new Brick);
 	m_bricks.back()->init(m_world.get(), glm::vec2(82.0f, -3.0f));
 	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(82.0f, -4.0f));
+	m_bricks.back()->init(m_world.get(), glm::vec2(82.0f, -2.5f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(82.0f, -2.0f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(82.0f, -1.5f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(82.0f, -1.0f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(82.0f, -0.5f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(82.0f, 0.0f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(82.0f, 0.5f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(82.0f, 1.0f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(82.0f, 1.5f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(82.0f, 2.0f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(82.0f, 2.5f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(82.0f, 3.0f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(82.0f, 3.5f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(82.0f, 4.0f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(82.0f, 4.5f));
+	m_bricks.push_back(new Brick);
+	m_bricks.back()->init(m_world.get(), glm::vec2(82.0f, 5.0f));
+
+	m_walls.push_back(new Wall);
+	m_walls.back()->init(m_world.get(), glm::vec2(82.0f, 0.5f), glm::vec2(1.1f, 9.75f));
+
 
 	m_bricks.push_back(new Brick);
 	m_bricks.back()->init(m_world.get(), glm::vec2(65.0f, -0.5f));
@@ -236,6 +310,9 @@ void GameplayScreen::loadLevel() {
 	m_bricks.push_back(new Brick);
 	m_bricks.back()->init(m_world.get(), glm::vec2(60.0f, -3.0f));
 
+	m_walls.push_back(new Wall);
+	m_walls.back()->init(m_world.get(), glm::vec2(61.5f, -3.0f), glm::vec2(4.0f, 0.85f));
+
 	m_bricks.push_back(new Brick);
 	m_bricks.back()->init(m_world.get(), glm::vec2(51.0f, -3.0f));
 	m_bricks.push_back(new Brick);
@@ -243,11 +320,16 @@ void GameplayScreen::loadLevel() {
 	m_bricks.push_back(new Brick);
 	m_bricks.back()->init(m_world.get(), glm::vec2(49.0f, -3.0f));
 
+	m_walls.push_back(new Wall);
+	m_walls.back()->init(m_world.get(), glm::vec2(50.0f, -3.0f), glm::vec2(3.0f, 0.85f));
 
 	m_bricks.push_back(new Brick);
 	m_bricks.back()->init(m_world.get(), glm::vec2(42.0f, -3.0f));
 	m_bricks.push_back(new Brick);
 	m_bricks.back()->init(m_world.get(), glm::vec2(41.0f, -3.0f));
+
+	m_walls.push_back(new Wall);
+	m_walls.back()->init(m_world.get(), glm::vec2(41.5f, -3.0f), glm::vec2(2.0f, 0.85f));
 
 	m_bricks.push_back(new Brick);
 	m_bricks.back()->init(m_world.get(), glm::vec2(34.0f, -3.0f));
@@ -260,6 +342,9 @@ void GameplayScreen::loadLevel() {
 	m_bricks.push_back(new Brick);
 	m_bricks.back()->init(m_world.get(), glm::vec2(30.0f, -3.0f));
 
+	m_walls.push_back(new Wall);
+	m_walls.back()->init(m_world.get(), glm::vec2(32.0f, -3.0f), glm::vec2(5.0f, 0.85f));
+
 	m_bricks.push_back(new Brick);
 	m_bricks.back()->init(m_world.get(), glm::vec2(24.0f, -3.0f));
 	m_bricks.push_back(new Brick);
@@ -270,9 +355,13 @@ void GameplayScreen::loadLevel() {
 	m_bricks.push_back(new Brick);
 	m_bricks.back()->init(m_world.get(), glm::vec2(15.0f, -3.0f));
 
+	m_walls.push_back(new Wall);
+	m_walls.back()->init(m_world.get(), glm::vec2(15.5f, -3.0f), glm::vec2(2.0f, 0.85f));
 
-	m_ground.init(m_world.get(), glm::vec2(58.0f, -9.0f), glm::vec2(144.0f, 2.0f));
-	m_startWall.init(m_world.get(), glm::vec2(-3.0f, 0.0f), glm::vec2(1.0f, 12.0f));
+	m_walls.push_back(new Wall);
+	m_walls.back()->init(m_world.get(), glm::vec2(58.0f, -9.0f), glm::vec2(144.0f, 2.0f));
+	m_walls.push_back(new Wall);
+	m_walls.back()->init(m_world.get(), glm::vec2(-3.0f, 0.0f), glm::vec2(1.0f, 12.0f));
 
 	m_background.init();
 	//m_houses.init();
@@ -411,7 +500,9 @@ void GameplayScreen::draw() {
 			b->drawDebug(m_debugRenderer, taengine::Color(255, 255, 255, 255));
 		}
 
-		m_ground.drawDebug(m_debugRenderer, taengine::Color(255, 255, 255, 255));
+		for (auto& w : m_walls) {
+			w->drawDebug(m_debugRenderer, taengine::Color(0, 0, 255, 255));
+		}
 
 		m_debugRenderer.end();
 		m_debugRenderer.render(projectionMatrix, 2.0f);

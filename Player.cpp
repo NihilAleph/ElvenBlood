@@ -53,7 +53,7 @@ void Player::draw(taengine::SpriteBatch& spriteBatch) {
 
 	b2Body* body = m_hitbox->getBody();
 
-	destRect.x = body->GetPosition().x - m_drawDimensions.x / 2;
+	destRect.x = body->GetPosition().x - m_drawDimensions.x / 2 - 0.1f;
 	destRect.y = body->GetPosition().y - m_drawDimensions.x / 2;
 	destRect.z = m_drawDimensions.x;
 	destRect.w = m_drawDimensions.y;

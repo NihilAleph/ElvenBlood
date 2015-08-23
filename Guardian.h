@@ -16,6 +16,8 @@ public:
 	virtual void update(taengine::InputManager& inputManager) override;
 	void drawDebug(taengine::DebugRenderer& renderer, taengine::Color color);
 
+	void setCounter(float counter) { m_counter = counter; }
+
 
 	void die();
 
