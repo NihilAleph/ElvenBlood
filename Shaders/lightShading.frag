@@ -15,7 +15,9 @@ void main() {
     vec2 origin = vec2(1.0, 0.0);
     vec2 normalizedUV = normalize(fragmentUV);
     float cosine = dot(normalizedUV, origin);
-    if (cosine > cos(1)) {
-    	color = vec4(fragmentColor.rgb, fragmentColor.a * (pow(0.01,distance)-0.01) * (cosine / (1 - cos(1)) + 1 - 1 / (1 - cos(1))));
+    if (cosine > cos(0.2)) {
+    	if (distance < 1.0) {
+    		color = vec4(fragmentColor.rgb, fragmentColor.a * (pow(0.5,distance)) * (cosine / (1 - cos(0.2)) + 1 - 1 / (1 - cos(0.2))));
+    	}
     }
 }

@@ -33,5 +33,5 @@ void Background::draw(taengine::SpriteBatch& spriteBatch) {
 	uvRect.w = 1.0f;
 
 	spriteBatch.draw(destRect, uvRect, -10.0f, m_tileSheet.texture.id,
-		taengine::Color(255, 255, 255, 255));
+		taengine::Color(128, 128, 128, 255));
 }

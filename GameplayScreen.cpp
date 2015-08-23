@@ -60,7 +60,7 @@ void GameplayScreen::onEntry() {
 	m_guardians.push_back(new Guardian);
 	m_guardians.back()->setCooldown(0.0f);
 	m_guardians.back()->setDirection();
-	m_guardians.back()->init(m_world.get(), glm::vec2(16.0f, -5.0f));
+	m_guardians.back()->init(m_world.get(), glm::vec2(16.0f, -6.0f));
 
 	// init crates
 	m_crates.push_back(new Crate);
@@ -69,14 +69,14 @@ void GameplayScreen::onEntry() {
 	// init bricks
 
 	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(23.0f, -3.0f));
+	m_bricks.back()->init(m_world.get(), glm::vec2(23.0f, -2.0f));
 	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(21.0f, -3.0f));
+	m_bricks.back()->init(m_world.get(), glm::vec2(21.0f, -2.0f));
 
 	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(16.0f, -3.0f));
+	m_bricks.back()->init(m_world.get(), glm::vec2(16.0f, -2.0f));
 	m_bricks.push_back(new Brick);
-	m_bricks.back()->init(m_world.get(), glm::vec2(15.0f, -3.0f));
+	m_bricks.back()->init(m_world.get(), glm::vec2(15.0f, -2.0f));
 
 
 	m_ground.init(m_world.get(), glm::vec2(28.0f, -9.0f), glm::vec2(84.0f, 2.0f));

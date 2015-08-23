@@ -36,7 +36,7 @@ void Crate::draw(taengine::SpriteBatch& spriteBatch) {
 
 
 	spriteBatch.draw(destRect, uvRect, -1.0f, m_tileSheet.texture.id,
-		taengine::Color(255, 255, 255, 255));
+		taengine::Color(128, 128, 128, 255));
 }
 
 void Crate::drawDebug(taengine::DebugRenderer& debugRender, taengine::Color color) {

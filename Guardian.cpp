@@ -76,7 +76,7 @@ void Guardian::draw(taengine::SpriteBatch& spriteBatch) {
 	}
 
 	spriteBatch.draw(destRect, uvRect, 0.0f, m_tileSheet.texture.id,
-		taengine::Color(255, 255, 255, 255), 0.0f);
+		taengine::Color(128, 128, 128, 255), 0.0f);
 }
 
 void Guardian::update(taengine::InputManager& inputManager) {
@@ -137,14 +137,17 @@ void Guardian::drawDebug(taengine::DebugRenderer& renderer, taengine::Color colo
 
 void Guardian::drawLight(taengine::SpriteBatch& spriteBatch) {
 
+	// extreme go horse
 	if (m_hitbox) {
 		glm::vec4 destRect;
-		destRect.x = m_position.x - m_range / 2.0f;
-		destRect.y = m_position.y - m_range / 2.0f;
-		destRect.z = m_range;
-		destRect.w = m_range;
+		destRect.x = m_position.x - m_range * 4 / 2.0f;
+		destRect.y = m_position.y - m_range * 4 / 2.0f;
+		destRect.z = m_range * 4 - 0.75 * m_direction;
+		destRect.w = m_range * 4;
+			
+		glm::vec4 uvRect(-1.0f, -1.0f, 2.0f, 2.0f);
+		uvRect *= -m_direction;
 
-
-		spriteBatch.draw(destRect, glm::vec4(-1.0f, -1.0f, 2.0f, 2.0f), 0.0f, 0, taengine::Color(155, 155, 0, 128));
+		spriteBatch.draw(destRect, uvRect, 0.0f, 0, taengine::Color(155, 155, 0, 255));
 	}
 }
