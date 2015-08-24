@@ -5,6 +5,7 @@
 #include <taengine\Window.h>
 #include <taengine\DebugRenderer.h>
 #include <taengine\SpriteFont.h>
+#include <taengine\AudioEngine.h>
 #include <Box2D\Box2D.h>
 #include "Player.h"
 #include "Guardian.h"
@@ -54,6 +55,8 @@ private:
 
 	taengine::SpriteBatch m_spriteBatch;
 	taengine::SpriteFont* m_spriteFont;
+
+	taengine::AudioEngine m_audioEngine;
 
 	std::unique_ptr<b2World> m_world = nullptr;
 

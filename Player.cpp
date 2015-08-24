@@ -12,7 +12,7 @@ Player::~Player()
 }
 
 
-void Player::init(b2World* world, const glm::vec2& position) {
+void Player::init(b2World* world, const glm::vec2& position, taengine::SoundEffect jumpEffect) {
 	m_hitbox = new Box;
 	glm::vec2 dimensions(1.0f, 2.5f);
 	static_cast<Box*> (m_hitbox)->init(world, b2_dynamicBody, position, true, false,
@@ -35,6 +35,7 @@ void Player::init(b2World* world, const glm::vec2& position) {
 	m_tileSheet.init(taengine::ResourceManager::getTexture("Sprites/anya.png"), glm::ivec2(7, 4));
 	m_drawDimensions = glm::vec2(3.0f, 3.0f);
 
+	m_jumpEffect = jumpEffect;
 
 	m_animationSpeed = 0.15f;
 	m_animationTime = 0.0f;
@@ -171,9 +172,10 @@ void Player::update(taengine::InputManager& inputManager) {
 	if (inputManager.isKeyDown(SDLK_a)) {
 		body->ApplyForce(b2Vec2(-FORCE, 0.0f), position, true);
 	}
-	if (inputManager.isKeyDown(SDLK_w)) {
+	if (inputManager.isKeyPressed(SDLK_w)) {
 		if (m_footContacts > 0) {
-			body->ApplyLinearImpulse(b2Vec2(0.0f, 15.0f), position, true);
+			m_jumpEffect.play();
+			body->ApplyLinearImpulse(b2Vec2(0.0f, 45.0f), position, true);
 		}
 	}
 

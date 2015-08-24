@@ -14,7 +14,7 @@ Guardian::~Guardian()
 }
 
 
-void Guardian::init(b2World* world, const glm::vec2& position, float cooldown, float range, int direction) {
+void Guardian::init(b2World* world, const glm::vec2& position, float cooldown, float range, int direction, taengine::SoundEffect killEffect) {
 	m_hitbox = new Box;
 	glm::vec2 dimensions(1.5f, 4.0f);
 	static_cast<Box*> (m_hitbox)->init(world, b2_staticBody, position, true, false,
@@ -27,6 +27,8 @@ void Guardian::init(b2World* world, const glm::vec2& position, float cooldown, f
 	m_counter = 0.0f;
 	m_range = range;
 	m_direction = direction;
+
+	m_killEffect = killEffect;
 
 	bool m_foundAnya = false;
 
@@ -123,6 +125,7 @@ void Guardian::update(taengine::InputManager& inputManager) {
 
 void Guardian::die() {
 	m_moveState = GuardianMoveState::DEAD;
+	m_killEffect.play();
 }
 
 

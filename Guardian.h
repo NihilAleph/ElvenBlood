@@ -1,5 +1,6 @@
 #pragma once
 #include "Body.h"
+#include <taengine\AudioEngine.h>
 
 enum class GuardianMoveState { STANDING, WALKING, DEAD };
 static std::string shouts[] = {"I got you now, you little monster!", "Where do you think you're going, little elf?",
@@ -12,7 +13,7 @@ public:
 	Guardian();
 	~Guardian();
 
-	void init(b2World* world, const glm::vec2& position, float cooldown, float range, int direction);
+	void init(b2World* world, const glm::vec2& position, float cooldown, float range, int direction, taengine::SoundEffect killEffect);
 
 	virtual void draw(taengine::SpriteBatch& spriteBatch) override;
 	void drawLight(taengine::SpriteBatch& spriteBatch);
@@ -44,5 +45,6 @@ private:
 
 	b2Fixture* m_sightSensor;
 
+	taengine::SoundEffect m_killEffect;
 };
 

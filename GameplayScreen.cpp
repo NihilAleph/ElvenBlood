@@ -28,7 +28,7 @@ void GameplayScreen::onEntry() {
 
 	m_hudSpriteBatch.init();
 
-	m_renderDebug = true;
+	m_renderDebug = false;
 	m_debugRenderer.init();
 
 	m_textureProgram.compileShaders("Shaders/textureShading.vert", "Shaders/textureShading.frag");
@@ -47,13 +47,18 @@ void GameplayScreen::onEntry() {
 
 	m_lightProgram.linkShaders();
 
+	m_audioEngine.init();
+
 	m_gameState = GameState::LOAD;
 }
 
 void GameplayScreen::loadLevel() {
 
-	// init of the game
+	// init music
+	taengine::Music music = m_audioEngine.loadMusic("Sfx/theme.wav");
+	music.play(-1);
 
+	// init of the game
 	b2Vec2 gravity(0.0f, -20.0f);
 	m_world = std::make_unique<b2World>(gravity);
 	m_world.get()->SetContactListener(&m_contactListener);
@@ -66,30 +71,30 @@ void GameplayScreen::loadLevel() {
 	m_hudCamera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
 	m_hudCamera.setPosition(glm::vec2(m_window->getScreenWidth() / 2.0f, m_window->getScreenHeight() / 2.0f));
 
-	//m_player.init(m_world.get(), glm::vec2(-1.0f, -7.0f));
-	m_player.init(m_world.get(), glm::vec2(103.0f, -7.0f));
+	m_player.init(m_world.get(), glm::vec2(-1.0f, -7.0f), m_audioEngine.loadSoundEffect("Sfx/jump.wav"));
+	//m_player.init(m_world.get(), glm::vec2(103.0f, -7.0f));
 
 	// init guardians
 	m_guardians.clear();
 
 	m_guardians.push_back(new Guardian);
-	m_guardians.back()->init(m_world.get(), glm::vec2(16.0f, -6.0f), 0.0f, 5.0f, -1);
+	m_guardians.back()->init(m_world.get(), glm::vec2(16.0f, -6.0f), 0.0f, 5.0f, -1, m_audioEngine.loadSoundEffect("Sfx/death.wav"));
 	m_guardians.push_back(new Guardian);
-	m_guardians.back()->init(m_world.get(), glm::vec2(34.0f, -6.0f), 4.5f, 5.0f, -1);
+	m_guardians.back()->init(m_world.get(), glm::vec2(34.0f, -6.0f), 4.5f, 5.0f, -1, m_audioEngine.loadSoundEffect("Sfx/death.wav"));
 	m_guardians.back()->setCounter(0.5f);
 
 	m_guardians.push_back(new Guardian);
-	m_guardians.back()->init(m_world.get(), glm::vec2(50.0f, -0.5f), 3.5f, 5.0f, -1);
+	m_guardians.back()->init(m_world.get(), glm::vec2(50.0f, -0.5f), 3.5f, 5.0f, -1, m_audioEngine.loadSoundEffect("Sfx/death.wav"));
 
 	m_guardians.push_back(new Guardian);
-	m_guardians.back()->init(m_world.get(), glm::vec2(68.0f, -3.25f), 4.5f, 5.0f, 1);
+	m_guardians.back()->init(m_world.get(), glm::vec2(68.0f, -3.25f), 4.5f, 5.0f, 1, m_audioEngine.loadSoundEffect("Sfx/death.wav"));
 
 	m_guardians.push_back(new Guardian);
-	m_guardians.back()->init(m_world.get(), glm::vec2(95.0f, -6.0f), 3.5f, 5.0f, 1);
+	m_guardians.back()->init(m_world.get(), glm::vec2(95.0f, -6.0f), 3.5f, 5.0f, 1, m_audioEngine.loadSoundEffect("Sfx/death.wav"));
 	m_guardians.push_back(new Guardian);
-	m_guardians.back()->init(m_world.get(), glm::vec2(95.0f, 3.0f), 4.5f, 5.0f, -1);
+	m_guardians.back()->init(m_world.get(), glm::vec2(95.0f, 3.0f), 4.5f, 5.0f, -1, m_audioEngine.loadSoundEffect("Sfx/death.wav"));
 	m_guardians.push_back(new Guardian);
-	m_guardians.back()->init(m_world.get(), glm::vec2(95.0f, 13.0f), 3.5f, 5.0f, -1);
+	m_guardians.back()->init(m_world.get(), glm::vec2(95.0f, 13.0f), 3.5f, 5.0f, -1, m_audioEngine.loadSoundEffect("Sfx/death.wav"));
 	m_guardians.back()->setCounter(0.5f);
 
 	// init crates

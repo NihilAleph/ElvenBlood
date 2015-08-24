@@ -1,5 +1,6 @@
 #pragma once
 #include "Body.h"
+#include <taengine\AudioEngine.h>
 
 enum class PlayerMoveState { STANDING, WALKING, ATTACKING, MIDAIR_UP, MIDAIR_DOWN, SIGHTED };
 
@@ -9,7 +10,7 @@ public:
 	Player();
 	~Player();
 
-	virtual void init(b2World* world, const glm::vec2& position) override;
+	void init(b2World* world, const glm::vec2& position, taengine::SoundEffect jumpEffect) ;
 
 	virtual void draw(taengine::SpriteBatch& spriteBatch) override;
 	virtual void update(taengine::InputManager& inputManager) override;
@@ -43,5 +44,7 @@ private:
 	PlayerMoveState m_moveState;
 
 	b2Fixture* m_attackSensor = nullptr;
+
+	taengine::SoundEffect m_jumpEffect;
 };
 
