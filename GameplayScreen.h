@@ -75,5 +75,7 @@ private:
 
 	void checkInput();
 
+	float m_timer;
+
 };
 

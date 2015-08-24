@@ -5,7 +5,7 @@
 enum class GuardianMoveState { STANDING, WALKING, DEAD };
 static std::string shouts[] = {"I got you now, you little monster!", "Where do you think you're going, little elf?",
 								"There she is! Grab that beast!", "There is one trying to escape! Grab her!",
-								"Look, another monster! Kill her!", "Don't run, you scum, I got you now" };
+								"Look, another monster! Kill her!", "Freeze, you scum! Drop your knife!" };
 
 class Guardian : public Body
 {

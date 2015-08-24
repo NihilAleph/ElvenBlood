@@ -65,14 +65,15 @@ void GameplayScreen::loadLevel() {
 
 	m_camera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
 
-	m_camera.setPosition(glm::vec2(0.0f, 0.0f));
+	m_camera.setPosition(glm::vec2(0.0f, -3.0f));
 	m_camera.setScale(32.0f);
+	m_camera.update();
 
 	m_hudCamera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
 	m_hudCamera.setPosition(glm::vec2(m_window->getScreenWidth() / 2.0f, m_window->getScreenHeight() / 2.0f));
 
-	//m_player.init(m_world.get(), glm::vec2(-1.0f, -7.0f), m_audioEngine.loadSoundEffect("Sfx/jump.wav"));
-	m_player.init(m_world.get(), glm::vec2(103.0f, -7.0f), m_audioEngine.loadSoundEffect("Sfx/jump.wav"));
+	m_player.init(m_world.get(), glm::vec2(-1.0f, -6.0f), m_audioEngine.loadSoundEffect("Sfx/jump.wav"));
+	//m_player.init(m_world.get(), glm::vec2(103.0f, -7.0f), m_audioEngine.loadSoundEffect("Sfx/jump.wav"));
 
 	// init guardians
 	m_guardians.clear();
@@ -419,6 +420,7 @@ void GameplayScreen::loadLevel() {
 
 	m_background.init();
 	m_houses.init();
+
 }
 
 void GameplayScreen::onExit() {
@@ -437,7 +439,14 @@ void GameplayScreen::update() {
 	switch (m_gameState) {
 	case GameState::LOAD :
 		loadLevel();
-		m_gameState = GameState::PLAY;
+		m_timer = 0;
+		m_gameState = GameState::BEGIN;
+		break;
+	case GameState::BEGIN :
+		m_timer += 1.0f / 60.0f;
+		if (m_timer > 6.0f) {
+			m_gameState = GameState::PLAY;
+		}
 		break;
 	case GameState::PLAY:
 	case GameState::SIGHTED:
@@ -508,6 +517,33 @@ void GameplayScreen::draw() {
 	m_spriteBatch.begin(taengine::GlyphSortType::FRONT_TO_BACK);
 
 	m_player.draw(m_spriteBatch);
+
+	if (m_gameState == GameState::BEGIN) {
+		char buffer[256];
+		if (m_timer > 0.0f && m_timer < 3.0f) {
+			sprintf_s(buffer, "Mom just gave me this knife");
+
+			m_spriteFont->draw(m_spriteBatch, buffer, m_player.getPosition() + glm::vec2(0.0f, 2.0f), glm::vec2(0.01f),
+				2.0f, taengine::Color(0, 200, 0, 255), taengine::Justification::MIDDLE);
+
+			sprintf_s(buffer, "and told me to run away...");
+
+			m_spriteFont->draw(m_spriteBatch, buffer, m_player.getPosition() + glm::vec2(0.0f, 1.25f), glm::vec2(0.01f),
+				2.0f, taengine::Color(0, 200, 0, 255), taengine::Justification::MIDDLE);
+			
+		}
+		if (m_timer > 3.0f && m_timer < 6.0f) {
+			sprintf_s(buffer, "What's going on?");
+
+			m_spriteFont->draw(m_spriteBatch, buffer, m_player.getPosition() + glm::vec2(0.0f, 2.0f), glm::vec2(0.01f),
+				2.0f, taengine::Color(0, 200, 0, 255), taengine::Justification::MIDDLE);
+
+			sprintf_s(buffer, "Why are the humans attacking us?");
+
+			m_spriteFont->draw(m_spriteBatch, buffer, m_player.getPosition() + glm::vec2(0.0f, 1.25f), glm::vec2(0.01f),
+				2.0f, taengine::Color(0, 200, 0, 255), taengine::Justification::MIDDLE);
+		}
+	}
 
 	if (m_player.hasEscaped()) {
 
