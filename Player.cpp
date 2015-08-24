@@ -45,7 +45,6 @@ void Player::init(b2World* world, const glm::vec2& position, taengine::SoundEffe
 	m_footContacts = 0;
 
 	m_killCount = 0;
-	m_escaped = false;
 	m_moveState = PlayerMoveState::STANDING;
 }
 

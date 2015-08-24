@@ -71,8 +71,8 @@ void GameplayScreen::loadLevel() {
 	m_hudCamera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
 	m_hudCamera.setPosition(glm::vec2(m_window->getScreenWidth() / 2.0f, m_window->getScreenHeight() / 2.0f));
 
-	m_player.init(m_world.get(), glm::vec2(-1.0f, -7.0f), m_audioEngine.loadSoundEffect("Sfx/jump.wav"));
-	//m_player.init(m_world.get(), glm::vec2(103.0f, -7.0f));
+	//m_player.init(m_world.get(), glm::vec2(-1.0f, -7.0f), m_audioEngine.loadSoundEffect("Sfx/jump.wav"));
+	m_player.init(m_world.get(), glm::vec2(103.0f, -7.0f), m_audioEngine.loadSoundEffect("Sfx/jump.wav"));
 
 	// init guardians
 	m_guardians.clear();

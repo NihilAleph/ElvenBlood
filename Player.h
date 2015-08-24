@@ -2,7 +2,7 @@
 #include "Body.h"
 #include <taengine\AudioEngine.h>
 
-enum class PlayerMoveState { STANDING, WALKING, ATTACKING, MIDAIR_UP, MIDAIR_DOWN, SIGHTED };
+enum class PlayerMoveState { STANDING, WALKING, ATTACKING, MIDAIR_UP, MIDAIR_DOWN, SIGHTED, ESCAPED };
 
 class Player : public Body
 {
@@ -23,11 +23,12 @@ public:
 	void addKill() { m_killCount++; }
 	int getKillCount() { return m_killCount; }
 
-	void setSighted() { /*m_moveState = PlayerMoveState::SIGHTED;*/ }
+	void setSighted() { m_moveState = PlayerMoveState::SIGHTED; }
 	bool isSighted() { return m_moveState == PlayerMoveState::SIGHTED; }
 
-	void escaped() { m_escaped = true; }
-	bool hasEscaped() { return m_escaped; }
+	void escaped() { m_moveState = PlayerMoveState::ESCAPED;
+	}
+	bool hasEscaped() { return m_moveState == PlayerMoveState::ESCAPED; }
 
 private:
 
@@ -39,7 +40,6 @@ private:
 	int m_footContacts = 0;
 
 	int m_killCount = 0;
-	bool m_escaped = false;
 
 	PlayerMoveState m_moveState;
 

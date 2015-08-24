@@ -1,0 +1,16 @@
+﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(381,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (ElvenTears.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Player.cpp
+  Generating Code...
+  Compiling...
+  main.cpp
+  GameplayScreen.cpp
+  ContactListener.cpp
+  App.cpp
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\memory(1639): warning C4316: 'GameplayScreen' : object allocated on the heap may not be aligned 16
+          d:\documents\muhan\taengine\elvenblood\app.cpp(18) : see reference to function template instantiation 'std::unique_ptr<GameplayScreen,std::default_delete<_Ty>> std::make_unique<GameplayScreen,taengine::Window*>(taengine::Window *&&)' being compiled
+          with
+          [
+              _Ty=GameplayScreen
+          ]
+  Generating Code...
+  ElvenBlood.vcxproj -> D:\Documents\Muhan\taengine\Debug\ElvenBlood.exe
